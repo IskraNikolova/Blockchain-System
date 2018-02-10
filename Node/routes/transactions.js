@@ -7,7 +7,6 @@ router.get('/:tranHash/info', (req, res) => {
     res.status(200).json(transactionInfo)
 })
 
-//TODO
 router.post('/new', (req, res) => {
     const result = handlerNode.postTransaction(req, res);  
 

@@ -55,8 +55,10 @@ module.exports.postNotifyForBlock = (req, res) => {
 //GET Transaction
 module.exports.getTransactionInfo = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    console.log(req.params)
+    
     let transaction = main.pendingTransactions[req.params['tranHash']];
-
+    console.log(main.pendingTransactions)
     res.send(
         transaction
     )
@@ -65,8 +67,8 @@ module.exports.getTransactionInfo = (req, res) => {
 //POST Transaction
 module.exports.postTransaction = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    let from = req.body.fromAddress;
-    let to = req.body.toAddress;
+    let from = req.body.from;
+    let to = req.body.to;
     let value = req.body.value;
     let senderPubKey = req.body.senderPubKey;
     let senderSignature = req.body.senderSignature;
@@ -87,7 +89,7 @@ module.exports.postTransaction = (req, res) => {
         minedInBlock,
         paid
     );   
-    console.log(transaction)
+    
     if (transaction){
        pendingTransactions.insertTransaction(transaction);
     }
