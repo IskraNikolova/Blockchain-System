@@ -7,9 +7,9 @@ router.get('/get-block/:address', (req, res) => {
     res.status(200).json(result)
  })
 
- router.post('/pow', (req, res) => {
-    const result = handlerNode.postPoW(req, res);
-    res.status(200).json(result)
- })
+ //router.post('/pow', (req, res) => {
+    //const result = handlerNode.postPoW(req, res);
+    //res.status(200).json(result)
+ //})
 
 module.exports = router

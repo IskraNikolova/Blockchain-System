@@ -157,10 +157,3 @@ module.exports.getMiningBlock = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(miningJob)
 }
-
-//Post Done Miner Job
-module.exports.postPoW = (req,res) => {
-    let result = blockchain.postPoW(req.body);
-    res.setHeader('Content-Type', 'application/json');
-    res.send(result)
-}

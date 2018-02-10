@@ -40,7 +40,7 @@ app.use('/blocks', blocksRoutes)
 app.use('/balance', balanceRoutes)
 app.use('/transactions', transactionRoutes)
 app.use('/peers', peersRoutes)
-app.use('./mining', miningRoutes)
+app.use('/mining', miningRoutes)
 
 
 app.listen(port, () => {
