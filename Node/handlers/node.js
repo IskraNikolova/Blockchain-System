@@ -120,6 +120,37 @@ module.exports.getBalance = (req, res) => {
     )
 }
 
+
+//GET Mining Block
+module.exports.getMiningBlock = (req, res) => {
+    let minerAddress = req.params['address'];
+    let miningJob = blockchain.miningJob(minerAddress);
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(miningJob)
+}
+
+
+//POST Submit Mining Block
+module.exports.postMiningBlock = (req, res) => {
+    const minerAddress = req.params['address'];
+    const nonce = req.body.nonce;
+    const dateCreated = req.body.dateCreated;
+    const blockHash = req.body.blockHash;
+
+    let block = main.miningJobs[minerAddress];
+    //TODO
+    let exReward = block.expectedReward;
+    let result = {
+        "status": "accepted",
+        "message": `Block accepted, expected reward: ${exReward} coins`     
+    }
+    
+    res.setHeader('Content-Type', 'application/json');
+    res.send(result)
+}
+
+
 //GET Peers
 module.exports.getPeers = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -147,13 +178,4 @@ module.exports.postPeer = (req, res) => {
     res.send(
         'Added peer...'
     )
-}
-
-//GET Mining Block
-module.exports.getMiningBlock = (req, res) => {
-    let minerAddress = req.params['address'];
-    let miningJob = blockchain.miningJob(minerAddress);
-
-    res.setHeader('Content-Type', 'application/json');
-    res.send(miningJob)
 }

@@ -52,12 +52,13 @@ module.exports.miningJob = (minerAddress) => {
                 "",             
                 Date.now(),    
                 index,         
-                false );
+                false           
+    );
 
     let pendingTransactions = main.pendingTransactions;
     pendingTransactions.push(coinBaseTransaction);
 
-    let transactions = pendingTransactions.length;
+    let transactions = pendingTransactions;
     let transactionsHash = CryptoJS.SHA256(transactions).toString();
     let prevBlockHash = this.calculateHashForBlock(this.getLatestBlock());
 
@@ -65,7 +66,9 @@ module.exports.miningJob = (minerAddress) => {
         index, 
         expectedReward, 
         transactions, 
-        prevBlockHash);
+        transactionsHash, 
+        prevBlockHash , 
+        main.difficulty);
 
     main.miningJobs[minerAddress] = jobForMining;
 
