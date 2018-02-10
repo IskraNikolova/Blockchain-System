@@ -3,9 +3,11 @@ let Transaction = require("../models/transaction")
 let MiningJob = require("../models/miningJob")
 let CryptoJS = require("crypto-js");
 let main = require('../index');
+let crypto = require('./utils/crypto')
 
 module.exports.calculateHash = (index, prevBlockHash, dateCreated, transactions, nonce) => {
-    return CryptoJS.SHA256(index + prevBlockHash + dateCreated + transactions + nonce).toString();
+    return crypto.calculateSHA256([index, prevBlockHash, dateCreated, transactions, nonce]);
+    //return CryptoJS.SHA256(index + prevBlockHash + dateCreated + transactions + nonce).toString();
 }
 
 module.exports.calculateHashForBlock = (block) => {
@@ -17,8 +19,6 @@ module.exports.addBlock = (newBlock) => {
         main.blockchain.push(newBlock);
     }
 }
-
-module.exports.getLatestBlock = () => main.blockchain[main.blockchain.length - 1];
 
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
     if (previousBlock.index + 1 !== newBlock.index) {
@@ -142,3 +142,5 @@ module.exports.postPoW = (pow) => {
 
     return pow;
 }
+
+module.exports.getLatestBlock = () => main.blockchain[main.blockchain.length - 1];

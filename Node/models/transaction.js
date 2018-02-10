@@ -5,18 +5,19 @@ class Transaction{
                 senderPubKey,
                 senderSignature,
                 transactionHash,
-                dataReceived,
+                dateReceived,
                 minedInBlock,
-                paid){
-                  
+                paid){      
                     this.addressFrom = addressFrom;
                     this.addressTo = addressTo;
                     this.value = value;
                     this.senderPubKey = senderPubKey;
                     this.senderSignature = senderSignature;
                     this.transactionHash = transactionHash;
-                    this.dataReceived = dataReceived;
+                    this.dateReceived = dateReceived;
                     this.minedInBlock = minedInBlock;
-                    this.paid = paid;
+                    this.paid = paid
                 }
 }
+
+module.exports = Transaction

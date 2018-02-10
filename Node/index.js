@@ -8,6 +8,7 @@ const infoRoutes = require('./routes/info')
 const miningRoutes = require('./routes/mining')
 
 let Block = require("./models/block")
+let Node = require('./models/node')
 const app = express()
 
 const port = 5555
