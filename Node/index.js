@@ -5,6 +5,7 @@ const balanceRoutes = require('./routes/balance')
 const transactionRoutes = require('./routes/transactions')
 const peersRoutes = require('./routes/peers')
 const infoRoutes = require('./routes/info')
+const miningRoutes = require('./routes/mining')
 
 let Block = require("./models/block")
 const app = express()
@@ -38,6 +39,7 @@ app.use('/blocks', blocksRoutes)
 app.use('/balance', balanceRoutes)
 app.use('/transactions', transactionRoutes)
 app.use('/peers', peersRoutes)
+app.use('./mining', miningRoutes)
 
 
 app.listen(port, () => {
