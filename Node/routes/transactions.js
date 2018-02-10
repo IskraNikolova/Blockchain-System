@@ -12,7 +12,7 @@ router.post('/new', (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product editted successfuly.',
+      message: 'Transaction posted successfuly.',
       result
     })
   })  

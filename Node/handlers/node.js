@@ -57,8 +57,8 @@ module.exports.getTransactionInfo = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     console.log(req.params)
     
-    let transaction = main.pendingTransactions[req.params['tranHash']];
-    console.log(main.pendingTransactions)
+    let transaction = main.pendingTransactions.filter(tr => tr.transactionHash == req.params['tranHash'])[0];
+    console.log(transaction)
     res.send(
         transaction
     )
