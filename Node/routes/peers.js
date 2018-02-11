@@ -5,7 +5,7 @@ const index = require('./../index')
 
 //GET Peers
 router.get('/', (req, res) => {
-   res.send(sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort));
+   res.send(index.sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort));
 })
 
 //POST Peer

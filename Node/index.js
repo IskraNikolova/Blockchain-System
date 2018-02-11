@@ -10,16 +10,11 @@ const transactionRoutes = require('./routes/transactions')
 const peersRoutes = require('./routes/peers')
 const infoRoutes = require('./routes/info')
 const miningRoutes = require('./routes/mining')
-
 const Block = require("./models/block")
 const Node = require('./models/node')
-const app = express()
 
-const port = process.env.HTTP_PORT || 5555
-var p2p_port = process.env.P2P_PORT || 6001;
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+const http_port = process.env.HTTP_PORT || 3002;
+var p2p_port = process.env.P2P_PORT || 6002;
 
 let getGenesisBlock = () => {
     return new Block(
@@ -39,7 +34,7 @@ module.exports.pendingTransactions = [];
 module.exports.miningJobs = [];
 module.exports.difficulty = 5;
 
-var sockets = [];
+module.exports.sockets = [];
 
 var MessageType = {
     QUERY_LATEST: 0,
@@ -47,19 +42,22 @@ var MessageType = {
     RESPONSE_BLOCKCHAIN: 2
 };
 
-// routes
-app.use('/info', infoRoutes)
-app.use('/blocks', blocksRoutes)
-app.use('/balance', balanceRoutes)
-app.use('/transactions', transactionRoutes)
-app.use('/peers', peersRoutes)
-app.use('/mining', miningRoutes)
-
 var initHttpServer = () => {
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}...`)
-  })
+    const app = express()
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.json())
+    // routes
+    app.use('/info', infoRoutes)
+    app.use('/blocks', blocksRoutes)
+    app.use('/balance', balanceRoutes)
+    app.use('/transactions', transactionRoutes)
+    app.use('/peers', peersRoutes)
+    app.use('/mining', miningRoutes)
+    app.listen(http_port, () => {
+    console.log(`Server running on port ${http_port}...`)
+    })
 };
+
 var initP2PServer = () => {
   var server = new WebSocket.Server({port: p2p_port});
   server.on('connection', ws => initConnection(ws));
@@ -68,7 +66,7 @@ var initP2PServer = () => {
 };
 
 var initConnection = (ws) => {
-  sockets.push(ws);
+  this.sockets.push(ws);
   initMessageHandler(ws);
   initErrorHandler(ws);
   write(ws, queryChainLengthMsg());
@@ -95,7 +93,7 @@ var initMessageHandler = (ws) => {
 var initErrorHandler = (ws) => {
   var closeConnection = (ws) => {
       console.log('connection failed to peer: ' + ws.url);
-      sockets.splice(sockets.indexOf(ws), 1);
+      this.sockets.splice(this.sockets.indexOf(ws), 1);
   };
   ws.on('close', () => closeConnection(ws));
   ws.on('error', () => closeConnection(ws));
@@ -158,11 +156,11 @@ var isValidChain = (blockchainToValidate) => {
   return true;
 };
 
-var getLatestBlock = () => blockchain[blockchain.length - 1];
+var getLatestBlock = () => this.blockchain[this.blockchain.length - 1];
 var queryChainLengthMsg = () => ({'type': MessageType.QUERY_LATEST});
 var queryAllMsg = () => ({'type': MessageType.QUERY_ALL});
 var responseChainMsg = () =>({
-  'type': MessageType.RESPONSE_BLOCKCHAIN, 'data': JSON.stringify(blockchain)
+  'type': MessageType.RESPONSE_BLOCKCHAIN, 'data': JSON.stringify(this.blockchain)
 });
 var responseLatestMsg = () => ({
   'type': MessageType.RESPONSE_BLOCKCHAIN,
@@ -170,7 +168,7 @@ var responseLatestMsg = () => ({
 });
 
 var write = (ws, message) => ws.send(JSON.stringify(message));
-var broadcast = (message) => sockets.forEach(socket => write(socket, message));
+var broadcast = (message) => this.sockets.forEach(socket => write(socket, message));
 
 this.connectToPeers(initialPeers);
 initHttpServer();

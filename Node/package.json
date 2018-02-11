@@ -4,13 +4,14 @@
   "description": "Testing Blockchain Network System - Exercise",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "IN",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
     "crypto-js": "^3.1.9-1",
+    "curl": "^0.1.4",
     "elliptic": "^6.4.0",
     "express": "^4.16.2",
     "ripemd160": "^2.0.1",
