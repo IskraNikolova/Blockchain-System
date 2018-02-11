@@ -21,20 +21,21 @@ module.exports.calculateHashForBlock = (block) => {
 }
 
 module.exports.addBlock = (newBlock) => {
-    if (this.isValidNewBlock(newBlock, this.getLatestBlock())) {
+    //if (this.isValidNewBlock(newBlock, this.getLatestBlock())) {
         let transactions = newBlock.transactions;
         let index = newBlock.index;
-
-        for(let i = 0; i < 0; i++){
+        
+        for(let i = 0; i < transactions.length; i++){
            transactions[i].paid = true;
            transactions[i].index = index;
+           main.confirmedTransactions++;
         }
 
-        console.log(transactions);//CHECK this
+        newBlock.transactions = transactions;
         main.blockchain.push(newBlock);
-    }
+    //}
 }
-
+pendingTransactions
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
     if (previousBlock.index + 1 !== newBlock.index) {
         console.log('Invalid index!');
@@ -106,14 +107,13 @@ module.exports.submitBlock = (req, minerAddress) => {
     const nonce = req.body.nonce;
     const dateCreated = req.body.dateCreated;
     const blockHash = req.body.blockHash;
-
     let miningJob = main.miningJobs[minerAddress];
     let difficulty = main.difficulty;
     let blockDataHash = miningJob.blockDataHash;
     let blockHashForCheck = crypto.calculateSHA256([blockDataHash, nonce, dateCreated]);//toISO
     let isValid = validator.validateBlockHash(blockHashForCheck, blockHash, difficulty);
 
-    if(isValid){
+   //if(isValid){
         let newBlock = new Block(
             miningJob.index,
             miningJob.transactions,
@@ -125,12 +125,13 @@ module.exports.submitBlock = (req, minerAddress) => {
             dateCreated,
             blockHash
         )
-
         this.addBlock(newBlock);
+        main.broadcast(main.responseLatestMsg());
+        console.log('block added: ' + JSON.stringify(newBlock));
         return true;
-    }
+    //}
 
-    return false;
+   // return false;
 }
 
 module.exports.getLatestBlock = () => main.blockchain[main.blockchain.length - 1];

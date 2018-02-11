@@ -27,7 +27,7 @@ router.get('/get-block/:address', (req, res) => {
         }
         res.status(200).json(result)
     }else{
-        res.status(400)
+        res.status(400).json({"message": "error"})
     }
  })
 

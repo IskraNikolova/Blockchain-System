@@ -24,7 +24,6 @@ router.get('/:tranHash/info', (req, res) => {
 //POST New Transaction
 router.post('/new', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log(req.body)
   let from = req.body.from;
   let to = req.body.to;
   let value = req.body.value;

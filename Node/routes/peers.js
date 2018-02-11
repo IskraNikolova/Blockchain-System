@@ -3,8 +3,8 @@ const router = new express.Router()
 const WebSocket = require("ws")
 const index = require('./../index')
 
-//set HTTP_PORT=3001 && set P2P_PORT=6001 && npm start
-//set HTTP_PORT=3002 && set P2P_PORT=6002 && set PEERS=http://localhost:6001 && npm start
+//set HTTP_PORT=5555 && set P2P_PORT=6001 && npm start
+//set HTTP_PORT=5556 && set P2P_PORT=6002 && set PEERS=http://localhost:6001 && npm start
 
 //GET Peers
 router.get('/', (req, res) => {

@@ -13,7 +13,7 @@ const miningRoutes = require('./routes/mining')
 const Block = require("./models/block")
 const Node = require('./models/node')
 
-const http_port = process.env.HTTP_PORT || 3002;
+const http_port = process.env.HTTP_PORT || 5555;
 var p2p_port = process.env.P2P_PORT || 6002;
 
 let getGenesisBlock = () => {
@@ -30,11 +30,19 @@ let getGenesisBlock = () => {
 };
 
 module.exports.blockchain = [getGenesisBlock()];
-module.exports.pendingTransactions = [];
+module.exports.pendingTransactions = [];//Todo pending transaction's paid true / false 
+module.exports.confirmedTransactions = [];
 module.exports.miningJobs = [];
 module.exports.difficulty = 5;
+module.exports.peers = initialPeers.length;
 
 module.exports.sockets = [];
+module.exports.broadcast = (message) => this.sockets.forEach(socket => write(socket, message));
+
+module.exports.responseLatestMsg = () => ({
+    'type': MessageType.RESPONSE_BLOCKCHAIN,
+    'data': JSON.stringify([getLatestBlock()])
+});
 
 var MessageType = {
     QUERY_LATEST: 0,
@@ -78,7 +86,7 @@ var initMessageHandler = (ws) => {
       console.log('Received message' + JSON.stringify(message));
       switch (message.type) {
           case MessageType.QUERY_LATEST:
-              write(ws, responseLatestMsg());
+              write(ws, this.responseLatestMsg());
               break;
           case MessageType.QUERY_ALL:
               write(ws, responseChainMsg());
@@ -100,13 +108,16 @@ var initErrorHandler = (ws) => {
 };
 
 module.exports.connectToPeers = (newPeers) => {
-  newPeers.forEach((peer) => {
-      var ws = new WebSocket(peer);
-      ws.on('open', () => initConnection(ws));
-      ws.on('error', () => {
-          console.log('connection failed')
-      });
-  });
+    newPeers.forEach((peer) => {
+        var ws = new WebSocket(peer);
+        ws.on('open', () => {
+            initConnection(ws)
+        });
+
+        ws.on('error', () => {
+            console.log('connection failed')
+        });
+    });
 };
 
 var handleBlockchainResponse = (message) => {
@@ -117,11 +128,11 @@ var handleBlockchainResponse = (message) => {
       console.log('blockchain possibly behind. We got: ' + latestBlockHeld.index + ' Peer got: ' + latestBlockReceived.index);
       if (latestBlockHeld.hash === latestBlockReceived.previousHash) {
           console.log("We can append the received block to our chain");
-          blockchain.push(latestBlockReceived);
-          broadcast(responseLatestMsg());
+          this.blockchain.push(latestBlockReceived);
+          this.broadcast(this.responseLatestMsg());
       } else if (receivedBlocks.length === 1) {
           console.log("We have to query the chain from our peer");
-          broadcast(queryAllMsg());
+          this.broadcast(queryAllMsg());
       } else {
           console.log("Received blockchain is longer than current blockchain");
           replaceChain(receivedBlocks);
@@ -132,10 +143,10 @@ var handleBlockchainResponse = (message) => {
 };
 
 var replaceChain = (newBlocks) => {
-  if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
+  if (isValidChain(newBlocks) && newBlocks.length > this.blockchain.length) {
       console.log('Received blockchain is valid. Replacing current blockchain with received blockchain');
-      blockchain = newBlocks;
-      broadcast(responseLatestMsg());
+      this.blockchain = newBlocks;
+      this.broadcast(this.responseLatestMsg());
   } else {
       console.log('Received blockchain invalid');
   }
@@ -162,13 +173,8 @@ var queryAllMsg = () => ({'type': MessageType.QUERY_ALL});
 var responseChainMsg = () =>({
   'type': MessageType.RESPONSE_BLOCKCHAIN, 'data': JSON.stringify(this.blockchain)
 });
-var responseLatestMsg = () => ({
-  'type': MessageType.RESPONSE_BLOCKCHAIN,
-  'data': JSON.stringify([getLatestBlock()])
-});
 
 var write = (ws, message) => ws.send(JSON.stringify(message));
-var broadcast = (message) => this.sockets.forEach(socket => write(socket, message));
 
 this.connectToPeers(initialPeers);
 initHttpServer();
