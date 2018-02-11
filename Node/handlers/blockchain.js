@@ -10,7 +10,14 @@ module.exports.calculateHash = (index, prevBlockHash, dateCreated, transactions,
 }
 
 module.exports.calculateHashForBlock = (block) => {
-    return this.calculateHash(block.index, block.prevBlockHash, block.dateCreated, block.transactions, block.nonce);
+    let blockHash = this.calculateHash(
+        block.index, 
+        block.prevBlockHash, 
+        block.dateCreated, 
+        block.transactions, 
+        block.nonce);
+
+    return blockHash;
 }
 
 module.exports.addBlock = (newBlock) => {
@@ -119,7 +126,7 @@ module.exports.submitBlock = (req, minerAddress) => {
             blockHash
         )
 
-        addBlock(newBlock);
+        this.addBlock(newBlock);
         return true;
     }
 
