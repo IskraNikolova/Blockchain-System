@@ -1,16 +1,15 @@
 class MiningJob {
-    constructor(index, 
-        expectedReward, 
+    constructor(
+        index, 
         transactions, 
-        transactionsHash, 
-        prevBlockHash, 
-        difficulty){
+        difficulty,
+        prevBlockHash,
+        blockDataHash){
             this.index = index;
-            this.expectedReward = expectedReward;
             this.transactions = transactions;
-            this.transactionsHash = transactionsHash;
-            this.prevBlockHash = prevBlockHash;
             this.difficulty = difficulty;
+            this.prevBlockHash = prevBlockHash;
+            this.blockDataHash = blockDataHash;
     }
 }
 

@@ -8,14 +8,13 @@ class Block {
         nonce, 
         dateCreated, 
         blockHash) {
-
             this.index = index;
             this.transactions = transactions;
-            this.prevBlockHash = prevBlockHash.toString();
-            this.blockDataHash = blockDataHash.toString();
-            this.minedBy = minedBy;
-            this.nonce = nonce;
             this.difficulty = difficulty;
+            this.prevBlockHash = prevBlockHash.toString();
+            this.minedBy = minedBy;
+            this.blockDataHash = blockDataHash.toString();         
+            this.nonce = nonce;
             this.dateCreated = dateCreated;
             this.blockHash = blockHash;
     }

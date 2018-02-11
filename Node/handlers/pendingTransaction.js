@@ -1,4 +1,3 @@
-let CryptoJS = require("crypto-js");
 let main = require('../index');
 
 module.exports.getPendingTransactions = () => {
@@ -7,5 +6,4 @@ module.exports.getPendingTransactions = () => {
 
 module.exports.insertTransaction = (transaction) => {
     main.pendingTransactions.push(transaction);
-
 }

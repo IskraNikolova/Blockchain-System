@@ -1,13 +1,12 @@
-let Block = require("../models/block")
-let Transaction = require("../models/transaction")
-let MiningJob = require("../models/miningJob")
-let CryptoJS = require("crypto-js");
-let main = require('../index');
-let crypto = require('./utils/crypto')
+const Block = require("../models/block")
+const Transaction = require("../models/transaction")
+const MiningJob = require("../models/miningJob")
+const main = require('../index');
+const crypto = require('./../utils/crypto')
+const validator = require('./../utils/validate')
 
 module.exports.calculateHash = (index, prevBlockHash, dateCreated, transactions, nonce) => {
     return crypto.calculateSHA256([index, prevBlockHash, dateCreated, transactions, nonce]);
-    //return CryptoJS.SHA256(index + prevBlockHash + dateCreated + transactions + nonce).toString();
 }
 
 module.exports.calculateHashForBlock = (block) => {
@@ -49,31 +48,73 @@ module.exports.miningJob = (minerAddress) => {
                 minerAddress,   
                 expectedReward, 
                 "",            
-                "",             
+                "", 
+                "",            
                 Date.now(),    
                 index,         
-                false           
-    );
+                false);
 
     let pendingTransactions = main.pendingTransactions;
     pendingTransactions.push(coinBaseTransaction);
 
     let transactions = pendingTransactions;
-    let transactionsHash = CryptoJS.SHA256(transactions).toString();
     let prevBlockHash = this.calculateHashForBlock(this.getLatestBlock());
+
+    let blockDataHash = crypto.calculateSHA256([
+        index, 
+        transactions, 
+        main.difficulty, 
+        prevBlockHash, 
+        minerAddress]);
 
     let jobForMining = new MiningJob(
         index, 
-        expectedReward, 
         transactions, 
-        transactionsHash, 
-        prevBlockHash , 
-        main.difficulty);
+        main.difficulty,
+        prevBlockHash,
+        blockDataHash);
 
     main.miningJobs[minerAddress] = jobForMining;
 
-    return jobForMining;
+    let sentMiningJob = {
+        index,
+        transactionIncuded: transactions.length,
+        expectedReward,
+        blockDataHash
+    }
+
+    return sentMiningJob;
 }
 
+module.exports.submitBlock = (req, minerAddress) => {
+    const nonce = req.body.nonce;
+    const dateCreated = req.body.dateCreated;
+    const blockHash = req.body.blockHash;
+
+    let miningJob = main.miningJobs[minerAddress];
+    let difficulty = main.difficulty;
+    let blockDataHash = miningJob.blockDataHash;
+    let blockHashForCheck = crypto.calculateSHA256([blockDataHash, nonce, dateCreated]);//toISO
+    let isValid = validator.validateBlockHash(blockHashForCheck, blockHash, difficulty);
+
+    if(isValid){
+        let newBlock = new Block(
+            miningJob.index,
+            miningJob.transactions,
+            difficulty,
+            miningJob.prevBlockHash,
+            minerAddress,
+            blockDataHash,
+            nonce,
+            dateCreated,
+            blockHash
+        )
+
+        addBlock(newBlock);
+        return true;
+    }
+
+    return false;
+}
 
 module.exports.getLatestBlock = () => main.blockchain[main.blockchain.length - 1];
