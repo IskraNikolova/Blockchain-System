@@ -15,6 +15,15 @@ module.exports.calculateHashForBlock = (block) => {
 
 module.exports.addBlock = (newBlock) => {
     if (this.isValidNewBlock(newBlock, this.getLatestBlock())) {
+        let transactions = newBlock.transactions;
+        let index = newBlock.index;
+
+        for(let i = 0; i < 0; i++){
+           transactions[i].paid = true;
+           transactions[i].index = index;
+        }
+
+        console.log(transactions);//CHECK this
         main.blockchain.push(newBlock);
     }
 }
