@@ -1,0 +1,9 @@
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\bin\Debug\Miner.exe.config
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\bin\Debug\Miner.exe
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\bin\Debug\Miner.pdb
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\bin\Debug\Newtonsoft.Json.dll
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\bin\Debug\Newtonsoft.Json.xml
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\obj\Debug\Miner.csprojResolveAssemblyReference.cache
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\obj\Debug\Miner.csproj.CoreCompileInputs.cache
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\obj\Debug\Miner.exe
+D:\BlockchainDev\Blockchain-System\Miner\TestMiner\Miner\obj\Debug\Miner.pdb

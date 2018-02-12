@@ -28,14 +28,15 @@ module.exports.addBlock = (newBlock) => {
         for(let i = 0; i < transactions.length; i++){
            transactions[i].paid = true;
            transactions[i].index = index;
-           main.confirmedTransactions++;
         }
-
+        
+        main.confirmedTransactions = main.pendingTransactions;
+        main.pendingTransactions = [];
         newBlock.transactions = transactions;
         main.blockchain.push(newBlock);
     //}
 }
-pendingTransactions
+
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
     if (previousBlock.index + 1 !== newBlock.index) {
         console.log('Invalid index!');
@@ -96,6 +97,7 @@ module.exports.miningJob = (minerAddress) => {
     let sentMiningJob = {
         index,
         transactionIncuded: transactions.length,
+        difficulty: main.difficulty,
         expectedReward,
         blockDataHash
     }
