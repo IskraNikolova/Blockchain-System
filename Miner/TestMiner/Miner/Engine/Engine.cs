@@ -3,7 +3,6 @@
     using System;
     using System.IO;
     using System.Net;
-    using System.Text;
     using System.Diagnostics;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -12,10 +11,24 @@
 
     public sealed class Engine : IEngine
     {
+        private static Engine instance;
+
+        public static Engine Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Engine();
+                }
+                return instance;
+            }
+        }
+
         public void Run(Stopwatch timer, TimeSpan blockTime)
         {
-            WebResponse response = null;
             HttpStatusCode statusCode = HttpStatusCode.RequestTimeout;
+            WebResponse response = null;
 
             //Create GET request 
             response = Util.CreateGetRequestToNode(response, statusCode);
@@ -28,31 +41,33 @@
             dataStream.Close();
             response.Close();
 
-            //Write Info For Starting Work
-            BlockTemplate blockTemplate = JsonConvert
-                .DeserializeObject<BlockTemplate>(responseFromNode);
+            //Write info for starting work
+            BlockTemplate blockTemplate = JsonConvert.DeserializeObject<BlockTemplate>(responseFromNode);
             Console.WriteLine("\nStart new task:");
             Console.WriteLine("Block Index: {0}", blockTemplate.Index);
             Console.WriteLine("Expected Reward: {0}", blockTemplate.ExpectedReward);
             Console.WriteLine("Block Data Hash: {0}", blockTemplate.BlockDataHash);
             Console.WriteLine("Difficulty: {0}\n", blockTemplate.Difficulty);
 
-            bool blockFound = false;
             long nonce = 0;
             string timestamp = DateTime.UtcNow.ToString("o");
-            string difficulty = new String('0', blockTemplate.Difficulty) +
-                new String('9', 64 - blockTemplate.Difficulty);
-
-            // blockHash = SHA256(BlockDataHash|Nonce|DataCreated);
             string precomputedData = blockTemplate.BlockDataHash;
-            string data;
-            string blockHash;
-
-            while (!blockFound && nonce < int.MaxValue)
+            bool blockFound = false;
+            while (!blockFound && nonce < long.MaxValue)
             {
-                data = precomputedData + timestamp + nonce;
-                blockHash = Util.ByteArrayToHexString(Util.Sha256(Encoding.UTF8.GetBytes(data)));
-                if (string.CompareOrdinal(blockHash, difficulty) < 0)
+                string data = precomputedData + timestamp + nonce;
+                string blockHash = Hash.GetHashSha256(data);
+
+                //PoW - Sums up the first number of ASCII table characters 
+                //and checks the sum if they match so they are zeros.
+                int sumOfFirstSymbols = 0;
+                for (int i = 0; i < blockTemplate.Difficulty; i++)
+                {
+                    sumOfFirstSymbols += blockHash[i];
+                }
+
+                int expectedSum = 48 * blockTemplate.Difficulty;
+                if (sumOfFirstSymbols == expectedSum)
                 {
                     Console.WriteLine("!!! Block found !!!");
                     Console.WriteLine($"Block Hash: {blockHash}\n");

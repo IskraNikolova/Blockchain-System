@@ -4,7 +4,6 @@
     using System;
     using System.IO;
     using System.Net;
-    using System.Security.Cryptography;
     using System.Text;
     using Utils;
 
@@ -89,26 +88,6 @@
 
                 System.Threading.Thread.Sleep(1000);
             } while (statusCode != HttpStatusCode.OK && retries++ < 3);
-        }
-
-        public static byte[] Sha256(byte[] array)
-        {
-            SHA256Managed hashstring = new SHA256Managed();
-            return hashstring.ComputeHash(array);
-        }
-
-        public static string ByteArrayToHexString(byte[] bytes)
-        {
-            StringBuilder result = new StringBuilder(bytes.Length * 2);
-            string hexAlphabet = "0123456789ABCDEF";
-
-            foreach (byte b in bytes)
-            {
-                result.Append(hexAlphabet[(int)(b >> 4)]);
-                result.Append(hexAlphabet[(int)(b & 0x0F)]);
-            }
-
-            return result.ToString();
         }
     }
 }

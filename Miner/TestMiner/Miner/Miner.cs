@@ -9,8 +9,8 @@
         public static void Main(string[] args)
         {
             Stopwatch timer = new Stopwatch();
-            TimeSpan blockTime = new TimeSpan(0, 0, 10);
-            IEngine engine = new Engine();
+            TimeSpan blockTime = new TimeSpan(0, 0, 5);
+            IEngine engine = Engine.Instance;
 
             while (true)
             {
