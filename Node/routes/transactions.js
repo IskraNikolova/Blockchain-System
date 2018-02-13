@@ -18,46 +18,58 @@ router.get('/:tranHash/info', (req, res) => {
     })
   }else{
     res.status(400)
+    res.send("Ooops :(")
+    res.end()
   }
 })
 
-//POST New Transaction
-router.post('/new', (req, res) => {
+//POST Send Transaction
+router.post('/send', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  let from = req.body.from;
-  let to = req.body.to;
-  let value = req.body.value;
-  let senderPubKey = req.body.senderPubKey;
-  let senderSignature = req.body.senderSignature;
+  try{
+      let from = req.body.from;
+      let to = req.body.to;
+      let value = req.body.value;
+      let fee = req.body.fee;
+      let dateCreated = req.body.dateCreated;
+      let senderPubKey = req.body.senderPubKey;
+      let senderSignature = req.body.senderSignature;
+    
+      let transactionHash = crypto
+          .calculateSHA256([from, to, value, fee, dateCreated, senderPubKey, senderSignature]);
+      let minedInBlockIndex = undefined;
+      let transferSuccessful = false;
+    
+      let sameTransaction = main.pendingTransactions
+            .filter(t => t.transactionHash == transactionHash)[0];
 
-  let transactionHash = crypto
-      .calculateSHA256([from, to, value, senderPubKey, senderSignature]);
-  let dateReceived = new Date();
-  let minedInBlock = undefined;
-  let paid = false;
+      if(!sameTransaction){
+          let transaction = new Transaction(
+            from, to, value, fee,
+            dateCreated, senderPubKey, senderSignature,
+            transactionHash, minedInBlockIndex, transferSuccessful);   
+            //TODO Validate transaction
 
-  let transaction = new Transaction(
-      from,
-      to,
-      value,
-      senderPubKey,
-      senderSignature,
-      transactionHash,
-      dateReceived,
-      minedInBlock,
-      paid);   
-  
-  pendingTransactions.insertTransaction(transaction);
-  result = {
-    "dateReceived": new Date(transaction.dateReceived).toISOString(),
-    "transactionHash": transaction.transactionHash
+            pendingTransactions.insertTransaction(transaction);
+          
+            result = {
+              "transactionHash": transaction.transactionHash
+            }
+          
+            res.status(201).json({
+              success: true,
+              message: 'Transaction created successfuly.',
+              result
+            })
+            res.end()
+      }else{
+        throw "Dulpicated transactions!"
+      }
+  }catch(err){
+    res.status(400)
+    res.send(`Ooops :( ${err}`)
+    res.end()
   }
-
-  res.status(200).json({
-    success: true,
-    message: 'Transaction posted successfuly.',
-    result
-  })
 })  
 
 module.exports = router

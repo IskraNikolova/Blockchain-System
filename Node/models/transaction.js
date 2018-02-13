@@ -1,22 +1,23 @@
 class Transaction{
-    constructor(addressFrom,
-                addressTo,
+    constructor(from,
+                to,
                 value,
+                fee,
+                dateCreated,
                 senderPubKey,
                 senderSignature,
                 transactionHash,
-                dateReceived,
-                minedInBlock,
-                paid){      
-                    this.addressFrom = addressFrom;
-                    this.addressTo = addressTo;
+                minedInBlockIndex,
+                transferSuccessful){      
+                    this.from = from;
+                    this.to = to;
                     this.value = value;
+                    this.dateCreated = dateCreated
                     this.senderPubKey = senderPubKey;
                     this.senderSignature = senderSignature;
                     this.transactionHash = transactionHash;
-                    this.dateReceived = dateReceived;
-                    this.minedInBlock = minedInBlock;
-                    this.paid = paid
+                    this.minedInBlockIndex = minedInBlockIndex;
+                    this.transferSuccessful = transferSuccessful
                 }
 }
 
