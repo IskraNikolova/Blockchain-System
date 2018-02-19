@@ -16,8 +16,9 @@
 
         public IActionResult Logout()
         {
-            //todo
-            return this.RedirectToAction("Index", "Home");
+            HttpContext.Session.Clear();
+            ViewData["Login"] = "No";
+            return View("Index");
         }
     }
 }

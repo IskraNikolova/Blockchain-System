@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,9 +35,13 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Wallet" asp-action="CreateNewWallet">Create New Wallet</a></li>
                     <li><a asp-area="" asp-controller="Wallet" asp-action="OpenExistingWallet">Open Existing Wallet</a></li>
-                    <li><a asp-area="" asp-controller="Balance" asp-action="AccountBalance">Account Balance</a></li>
-                    <li><a asp-area="" asp-controller="Transactions" asp-action="SendTransaction">Send Transaction</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                    @if (ViewData["Login"] == "Yes")
+                    {
+                        <li><a asp-area="" asp-controller="Balance" asp-action="AccountBalance">Account Balance</a></li>
+                        <li><a asp-area="" asp-controller="Transactions" asp-action="SendTransaction">Send Transaction</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+
+                    }
                 </ul>
             </div>
         </div>

@@ -35,7 +35,7 @@ namespace Wallet.Controllers
 
             //Set serializable objects to Session
             HttpContext.Session.SetString(model.Address, JsonConvert.SerializeObject(model));
-
+            ViewData["Login"] = "Yes";
             return View("CreateNewWallet", model);
         }
 
@@ -57,6 +57,9 @@ namespace Wallet.Controllers
             OpenExistingWalletVm model = 
                  this.service.ExistingPrivateKeyToAddress(privateKey);
 
+            //Set serializable objects to Session
+            HttpContext.Session.SetString(model.Address, JsonConvert.SerializeObject(model));
+            ViewData["Login"] = "Yes";
             return View("OpenExistingWallet", model);
         }
     }
