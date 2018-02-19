@@ -5,5 +5,7 @@
     public interface ITransactionsService
     {
         CreateNewWalletVm RandomPrivateKeyToAddress();
+
+        OpenExistingWalletVm ExistingPrivateKeyToAddress(string privKeyHex);
     }
 }

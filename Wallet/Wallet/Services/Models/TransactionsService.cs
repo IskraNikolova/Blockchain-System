@@ -19,11 +19,12 @@
 
     public class TransactionsService : ITransactionsService
     {
+        private readonly X9ECParameters curve = SecNamedCurves.GetByName("secp256k1");
         public CreateNewWalletVm RandomPrivateKeyToAddress()
         {
             var keyPair = GenerateRandomKeys();
             BigInteger privateKey = ((ECPrivateKeyParameters)keyPair.Private).D;
-            ECPoint pubKey = ((ECPublicKeyParameters)keyPair.Public).Q;
+            ECPoint pubKey = GetPublicKeyFromPrivateKey(privateKey);//((ECPublicKeyParameters)keyPair.Public).Q;
             string pubKeyCompressed = EncodeECPointHexCompressed(pubKey);
             string address = CalcRipeMD160(pubKeyCompressed);
 
@@ -38,7 +39,34 @@
             return newWallet;
         }
 
-        public AsymmetricCipherKeyPair GenerateRandomKeys(int keySize = 256)
+        public OpenExistingWalletVm ExistingPrivateKeyToAddress(string privKeyHex)
+        {
+            BigInteger privateKey = new BigInteger(privKeyHex, 16);
+
+            ECPoint pubKey = GetPublicKeyFromPrivateKey(privateKey);
+
+            string pubKeyCompressed = EncodeECPointHexCompressed(pubKey);
+
+            string address = CalcRipeMD160(pubKeyCompressed);
+
+            OpenExistingWalletVm model = new OpenExistingWalletVm
+            {
+                PrivateKey = privateKey.ToString(16),
+                PublicKey = pubKeyCompressed,
+                Address = address,
+                Info = $"\nDecoded existing private key:\n{privateKey.ToString(16)}\nExtracted public key:\n{pubKeyCompressed}\nExtracted blockchain address:\n{address}"
+            };
+
+            return model;
+        }
+
+        private  ECPoint GetPublicKeyFromPrivateKey(BigInteger privKey)
+        {
+            ECPoint pubKey = curve.G.Multiply(privKey).Normalize();
+            return pubKey;
+        }
+
+        private AsymmetricCipherKeyPair GenerateRandomKeys(int keySize = 256)
         {
             ECKeyPairGenerator gen = new ECKeyPairGenerator();
             SecureRandom secureRandom = new SecureRandom();
