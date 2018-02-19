@@ -41,6 +41,7 @@
 
         public OpenExistingWalletVm ExistingPrivateKeyToAddress(string privKeyHex)
         {
+            //todo check for null parameters
             BigInteger privateKey = new BigInteger(privKeyHex, 16);
 
             ECPoint pubKey = GetPublicKeyFromPrivateKey(privateKey);

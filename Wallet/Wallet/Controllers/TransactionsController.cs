@@ -1,7 +1,10 @@
 namespace Wallet.Controllers
 {
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Wallet.Models.BindingModels;
+    using Newtonsoft.Json;
+    using System;
+    using Wallet.Models.ViewModels;
     using Wallet.Services.Interfaces;
 
     public class TransactionsController : Controller
@@ -13,16 +16,48 @@ namespace Wallet.Controllers
             this.service = service;
         }
 
-        [HttpGet]
-        public IActionResult SignTransaction()
+        public IActionResult SendTransaction()
         {
-            return View();
+            SignTransactionVm model = new SignTransactionVm();
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult SendTransaction(SendTransactionBm bm)
+        public IActionResult SendTransaction(string info, string url)
         {
-            return PartialView("_SendTransaction", bm);
+            var model = JsonConvert.DeserializeObject<SignTransactionVm>(info);
+            model.Info = info;
+            var result = this.GetModel(model);
+            return View("SendTransaction", result);
+        }
+
+        public IActionResult SignTransaction(SignTransactionVm model)
+        {
+            var result = this.GetModel(model);
+            return View("SendTransaction", result);
+        }
+
+        private SignTransactionVm GetModel(SignTransactionVm model)
+        {
+            var obj = HttpContext.Session.GetString(model.From);
+            var value = JsonConvert.DeserializeObject<OpenExistingWalletVm>(obj);
+
+            SignTransactionVm result = new SignTransactionVm
+            {
+                From = model.From,
+                To = model.To,
+                Value = model.Value,
+                Fee = 10,
+                DateCreated = DateTime.Now,//todo ISO
+                SenderPubKey = value.PublicKey,
+                Info = ""
+            };
+
+            string info = JsonConvert.SerializeObject(result);
+            result.Info = info.Substring(0, info.LastIndexOf(',')) + "}";
+
+            return result;
         }
     }
 }
