@@ -18,7 +18,7 @@
     </div>
     <div>Blockchain Node:
         <form form asp-controller="Transactions" asp-action="SendTransaction" method="post" class="form-group">
-            <input type="text" name="url" class="form-control" />
+            <input type="text" name="url" value="http://localhost:5555/transactions/send" class="form-control" />
             <input type="hidden" name="info" value="@Model.Info" class="form-control" />
             <input type="submit" value="Send Transaction" class="btn btn-default active" />
         </form>

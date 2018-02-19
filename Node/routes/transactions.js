@@ -62,7 +62,7 @@ router.post('/send', (req, res) => {
           
             res.status(201).json({
               success: true,
-              message: 'Transaction created successfuly.',
+              message: 'Transaction successfuly sent.',
               result
             })
             res.end()

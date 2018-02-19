@@ -31,6 +31,7 @@ namespace Wallet
         {
             // Add framework services.
             services.AddTransient<ITransactionsService, TransactionsService>();
+            services.AddTransient<IHttpRequestService, HttpRequestService>();
             services.AddMvc();
 
             // Adds a default in-memory implementation of IDistributedCache.
