@@ -1,6 +1,5 @@
 ﻿namespace Miner
 {
-    using System;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -9,13 +8,13 @@
         public static string GetHashSha256(string text)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(text);
-            SHA256Managed hashstring = new SHA256Managed();
+            SHA256Managed sHA256 = new SHA256Managed();
 
-            byte[] hash = hashstring.ComputeHash(bytes);
+            byte[] hash = sHA256.ComputeHash(bytes);
             string hashString = string.Empty;
             foreach (byte x in hash)
             {
-                hashString += String.Format("{0:x2}", x);
+                hashString += string.Format("{0:x2}", x);
             }
 
             return hashString;

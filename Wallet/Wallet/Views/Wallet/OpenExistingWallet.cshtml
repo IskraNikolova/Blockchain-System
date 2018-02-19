@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Open Existing Wallet";
+}
+@model Wallet.Models.BindingModels.OpenExistingWalletBm
+
+<h1>Open Existing Wallet</h1>
+
+<h3>Enter your wallet private key (compressed ECDSA key 65 hex digits)</h3>
+
+<form asp-action="Wallet/Open" asp-controller="Wallet">
+    <label asp-for="PrivateKey"></label>
+    <input asp-for="PrivateKey"/>
+    <input type="submit" value="Open Existing Wallet"/>
+</form>
+
+    //partial view

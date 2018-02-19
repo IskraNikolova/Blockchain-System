@@ -9,7 +9,11 @@ const Transaction = require('./../models/transaction')
 router.get('/:tranHash/info', (req, res) => { 
   let transaction = main.pendingTransactions
             .filter(tr => tr.transactionHash == req.params['tranHash'])[0];
-
+  if(!transaction){
+    transaction = main.confirmedTransactions
+            .filter(tr => tr.transactionHash == req.params['tranHash'])[0];
+  }
+  
   res.setHeader('Content-Type', 'application/json'); 
   if(transaction){
     res.status(200).json({
@@ -17,8 +21,8 @@ router.get('/:tranHash/info', (req, res) => {
       transaction
     })
   }else{
-    res.status(400)
-    res.send("Ooops :(")
+    res.status(404)
+    res.send("Ooops :( Not Found")
     res.end()
   }
 })
@@ -48,7 +52,7 @@ router.post('/send', (req, res) => {
             from, to, value, fee,
             dateCreated, senderPubKey, senderSignature,
             transactionHash, minedInBlockIndex, transferSuccessful);   
-            //TODO Validate transaction
+            //TODO Validate transaction & Send to other peers
 
             pendingTransactions.insertTransaction(transaction);
           

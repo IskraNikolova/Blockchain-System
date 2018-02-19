@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Account Balance";
+}
+
+@model Wallet.Models.BindingModels.AcountBalanceBm
+
+<h1>Account Balance</h1>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <form asp-action="Balance/AccountBalance" asp-controller="Balance">
+        <div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+        </div>
+        <div>
+        <label asp-for="BlockChainNode"></label>
+        <input asp-for="BlockChainNode" />
+        </div>
+        <input type="submit" value="Display Balance"/>
+    </form>
+}

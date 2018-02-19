@@ -12,6 +12,7 @@ class Transaction{
                     this.from = from;
                     this.to = to;
                     this.value = value;
+                    this.fee = fee;
                     this.dateCreated = dateCreated
                     this.senderPubKey = senderPubKey;
                     this.senderSignature = senderSignature;

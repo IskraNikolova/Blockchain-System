@@ -31,7 +31,7 @@ module.exports.addBlock = (newBlock) => {
         }
         
         main.confirmedTransactions = main.pendingTransactions;
-        main.pendingTransactions = [];
+        main.pendingTransactions = [];//TO DO check this
         newBlock.transactions = transactions;
         main.blockchain.push(newBlock);
     //}
@@ -61,16 +61,13 @@ module.exports.miningJob = (minerAddress) => {
     let expectedReward = 25;
     let index = this.getLatestBlock().index + 1;
 
-    let coinBaseTransaction = new Transaction(
-                "0x0",          
-                minerAddress,   
-                expectedReward, 
-                "",            
-                "", 
-                "",            
-                Date.now(),    
-                index,         
-                false);
+    let fromCoinBaseTr = "0000000000000000000000000000000000000000";
+    let dateCoinBaseTr = Date.now();
+    let coinBaseTransactionHash = crypto.calculateSHA256([fromCoinBaseTr, minerAddress, expectedReward,
+                                                        0, dateCoinBaseTr, "", ""]);
+
+    let coinBaseTransaction = new Transaction(fromCoinBaseTr, minerAddress, expectedReward, 
+                             0, dateCoinBaseTr, "", "", coinBaseTransactionHash, index, true);
 
     let pendingTransactions = main.pendingTransactions;
     pendingTransactions.push(coinBaseTransaction);
