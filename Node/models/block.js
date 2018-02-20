@@ -1,5 +1,6 @@
 class Block {
-    constructor(index, 
+    constructor(
+        index, 
         transactions, 
         difficulty, 
         prevBlockHash, 

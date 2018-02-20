@@ -17,10 +17,8 @@ module.exports.converHexToUint = (text) => {
     return array
 }
 
-module.exports.calculateSHA256 = (...arg) => {
-    let stringToBeHashed = (arg.join(""))
-
-    return cryptoJs.SHA256(stringToBeHashed).toString()
+module.exports.calculateSHA256 = (obj) => {
+    return cryptoJs.SHA256(obj).toString()
 }
 
 module.exports.generateKeys = () => {

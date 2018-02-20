@@ -30,7 +30,6 @@ router.get('/:tranHash/info', (req, res) => {
 //POST Send Transaction
 router.post('/send', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  try{
       let from = req.body.from;
       let to = req.body.to;
       let value = req.body.value;
@@ -39,16 +38,18 @@ router.post('/send', (req, res) => {
       let senderPubKey = req.body.senderPubKey;
       let senderSignature = req.body.senderSignature;
     
+      //Calculate transaction hash SHA256
       let transactionHash = crypto
           .calculateSHA256([from, to, value, fee, dateCreated, senderPubKey, senderSignature]);
+
       let minedInBlockIndex = undefined;
       let transferSuccessful = false;
     
-      let sameTransaction = main.pendingTransactions
-            .filter(t => t.transactionHash == transactionHash)[0];
+      //let sameTransaction = pendingTransactions.getPendingTransactions()
+           // .filter(t => t.transactionHash == transactionHash)[0];
 
-      if(!sameTransaction){
-          let transaction = new Transaction(
+      //if(!sameTransaction){
+            let transaction = new Transaction(
             from, to, value, fee,
             dateCreated, senderPubKey, senderSignature,
             transactionHash, minedInBlockIndex, transferSuccessful);   
@@ -61,14 +62,11 @@ router.post('/send', (req, res) => {
               transactionHash
             })
             res.end()
-      }else{
-        throw "Dulpicated transactions!"
-      }
-  }catch(err){
-    res.status(400)
-    res.send(`Ooops :( ${err}`)
-    res.end()
-  }
+      //}else{
+        //res.status(400).json({
+        //  message: "Duplicated Transaction!!!"
+       // })  
+     // }
 })  
 
 module.exports = router

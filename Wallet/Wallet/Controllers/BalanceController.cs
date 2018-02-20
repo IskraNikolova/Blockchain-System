@@ -1,9 +1,7 @@
 namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System;
     using Wallet.Models.BindingModels;
-    using Wallet.Models.ViewModels;
 
     public class BalanceController : Controller
     {
