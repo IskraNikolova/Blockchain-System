@@ -41,13 +41,13 @@ namespace Wallet.Controllers
 
         public IActionResult OpenExistingWallet()
         {
-            var model = new OpenExistingWalletVm
-            {
-                PrivateKey = "",
-                PublicKey = "",
-                Address = "",
-                Info = ""
-            };
+            var model = new OpenExistingWalletVm();
+            //{
+            //    PrivateKey = "",
+            //    PublicKey = "",
+            //    Address = "",
+            //    Info = ""
+            //};
 
             return View(model);
         }

@@ -1,10 +1,9 @@
 namespace Wallet.Controllers
 {
+    using System;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
-    using System;
-    using System.Threading.Tasks;
     using Wallet.Models.ViewModels;
     using Wallet.Services.Interfaces;
 
@@ -20,6 +19,7 @@ namespace Wallet.Controllers
             this.httpRequestService = httpRequestService;
         }
 
+        [HttpGet]
         public IActionResult SendTransaction()
         {
             SignTransactionVm model = new SignTransactionVm();
@@ -30,25 +30,31 @@ namespace Wallet.Controllers
         [HttpPost]
         public IActionResult SendTransaction(string info, string url)
         {
-            var model = JsonConvert.DeserializeObject<SignTransactionVm>(info);
-            string to = model.To;
-            string dateCreated = (model.DateCreated).ToString("o");
-            int value = model.Value;
-            int fee = model.Fee;
+            var model = JsonConvert.DeserializeObject<SignTransactionVm>(info);       
+            
+            //Take private key from session
             var obj = HttpContext.Session.GetString(model.From);
             var jsonModel = JsonConvert.DeserializeObject<OpenExistingWalletVm>(obj);
-            string jsonResult = this.transactionService.CreateAndSignTransaction(to,
-                value,
-                fee,
+            var privateKey = jsonModel.PrivateKey;
+
+            string dateCreated = (model.DateCreated).ToString("o");
+
+            //Create signature for request
+            string jsonResult = this.transactionService.CreateAndSignTransaction(
+                model.To,
+                model.Value,
+                model.Fee,
                 dateCreated,
-                jsonModel.PrivateKey);
+                privateKey);
 
             var response = this.httpRequestService.Pots<ResponseSentTransactionVm>(url, jsonResult);
-            return Content(response.Message);
-            //return Content(jsonResult);TODO SEND REQUEST!!!
-            //model.Info = info;
-            //var result = this.GetModel(model);
-            //return View("SendTransaction", result);
+
+            //Populate model with info and sent to view
+            model.Info = info;
+            model.Response = $"{response.Message}\nTransaction Hash: {response.TransactionHash}";
+            var result = this.GetModel(model);
+
+            return View("SendTransaction", result);
         }
 
         public IActionResult SignTransaction(SignTransactionVm model)
@@ -70,11 +76,13 @@ namespace Wallet.Controllers
                 Fee = 10,
                 DateCreated = DateTime.UtcNow,
                 SenderPubKey = value.PublicKey,
-                Info = ""
+                Info = "",
+                Response = model.Response == "" ? "" : model.Response
             };
 
             string info = JsonConvert.SerializeObject(result);
-            result.Info = info.Substring(0, info.LastIndexOf(',')) + "}";
+            result.Info = info.Substring(0, info.LastIndexOf(','));
+            result.Info = result.Info.Substring(0, result.Info.LastIndexOf(',')) + "}";
 
             return result;
         }

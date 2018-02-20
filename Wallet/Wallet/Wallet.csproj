@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ViewModels\AcountBalanceVm.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Transactions\SignTransaction.cshtml" />
   </ItemGroup>
 

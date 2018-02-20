@@ -56,14 +56,9 @@ router.post('/send', (req, res) => {
 
             pendingTransactions.insertTransaction(transaction);
           
-            result = {
-              "transactionHash": transaction.transactionHash
-            }
-          
             res.status(201).json({
-              success: true,
-              message: 'Transaction successfuly sent.',
-              result
+              message: 'Transaction successfully sent.',
+              transactionHash
             })
             res.end()
       }else{

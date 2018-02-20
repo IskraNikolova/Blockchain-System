@@ -3,10 +3,10 @@
     using Newtonsoft.Json;
     using System.IO;
     using System.Net;
-    using System.Threading.Tasks;
 
     public class HttpRequestService : IHttpRequestService
     {
+        //GET
         public T Get<T>(string resUrl)
         {
             var request = WebRequest.Create(resUrl) as HttpWebRequest;
@@ -25,6 +25,7 @@
             return responseData;
         }
 
+        //POST
         public T Pots<T>(string resURL, object data)
         {
             var request = WebRequest.Create(resURL) as HttpWebRequest;

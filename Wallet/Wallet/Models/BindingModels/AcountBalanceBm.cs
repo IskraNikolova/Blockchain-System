@@ -8,5 +8,7 @@ namespace Wallet.Models.BindingModels
 
         [DisplayName("Blockcahin Node")]
         public string BlockChainNode { get; set; }
+
+        public string Info { get; set; }
     }
 }

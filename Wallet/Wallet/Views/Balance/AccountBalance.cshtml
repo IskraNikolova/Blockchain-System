@@ -2,9 +2,9 @@
     ViewData["Title"] = "Account Balance";
 }
 
-@model Wallet.Models.BindingModels.AcountBalanceBm
+@model AcountBalanceBm
 
-<h1>Account Balance</h1>
+<h1>View Account Balance</h1>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -22,3 +22,7 @@
         <input type="submit" value="Display Balance"/>
     </form>
 }
+    <div>
+        @Html.Partial("_ViewBalancePartial", Model.Info)
+    </div>
+

@@ -17,5 +17,7 @@
         public string SenderPubKey { get; set; }
 
         public string Info { get; set; }
+
+        public string Response { get; set; }
     }
 }
