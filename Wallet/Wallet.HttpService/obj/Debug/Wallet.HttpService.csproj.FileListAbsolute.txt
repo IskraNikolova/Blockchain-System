@@ -1,9 +1,0 @@
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\bin\Debug\Wallet.HttpService.exe.config
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\bin\Debug\Wallet.HttpService.exe
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\bin\Debug\Wallet.HttpService.pdb
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\bin\Debug\Newtonsoft.Json.dll
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\bin\Debug\Newtonsoft.Json.xml
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\obj\Debug\Wallet.HttpService.csprojResolveAssemblyReference.cache
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\obj\Debug\Wallet.HttpService.csproj.CoreCompileInputs.cache
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\obj\Debug\Wallet.HttpService.exe
-D:\BlockchainDev\Blockchain-System\Wallet\Wallet.HttpService\obj\Debug\Wallet.HttpService.pdb
