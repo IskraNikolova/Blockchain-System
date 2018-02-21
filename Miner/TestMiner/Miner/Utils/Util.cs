@@ -9,9 +9,10 @@
 
     public static class Util
     {
-        public static WebResponse CreateGetRequestToNode(WebResponse response, HttpStatusCode statusCode)
+        public static string CreateGetRequestToNode()
         {
-            statusCode = HttpStatusCode.RequestTimeout;
+            var statusCode = HttpStatusCode.RequestTimeout;
+            WebResponse response = null;
             do
             {
                 try
@@ -40,17 +41,21 @@
                 }
             } while (statusCode != HttpStatusCode.OK);
 
-            return response;
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromNode = reader.ReadToEnd();
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+
+            return responseFromNode;
         }
 
-        public static void CreatePostRequestToNode(
-            HttpStatusCode statusCode, 
-            Stream dataStream, 
-            WebResponse response, 
-            JObject dataObject)
+        public static void CreatePostRequestToNode(JObject dataObject)
         {
             byte[] blockFoundData = Encoding.UTF8.GetBytes(dataObject.ToString());
             int retries = 0;
+            HttpStatusCode statusCode = HttpStatusCode.OK;
 
             do
             {
@@ -63,11 +68,11 @@
                     request.Timeout = 3000;
                     request.ContentType = "application/json; charset=utf-8";
 
-                    dataStream = request.GetRequestStream();
+                    var dataStream = request.GetRequestStream();
                     dataStream.Write(blockFoundData, 0, blockFoundData.Length);
                     dataStream.Close();
 
-                    response = request.GetResponse();
+                    WebResponse response = request.GetResponse();
                     statusCode = ((HttpWebResponse)response).StatusCode;
 
                     // Display the status.

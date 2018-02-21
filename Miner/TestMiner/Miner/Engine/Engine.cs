@@ -27,19 +27,8 @@
 
         public void Run(Stopwatch timer, TimeSpan blockTime)
         {
-            HttpStatusCode statusCode = HttpStatusCode.RequestTimeout;
-            WebResponse response = null;
-
             //Create GET request 
-            response = Util.CreateGetRequestToNode(response, statusCode);
-
-            // Read the content.
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string responseFromNode = reader.ReadToEnd();
-            reader.Close();
-            dataStream.Close();
-            response.Close();
+            string responseFromNode = Util.CreateGetRequestToNode();
 
             //Write info for starting work
             BlockTemplate blockTemplate = JsonConvert.DeserializeObject<BlockTemplate>(responseFromNode);
@@ -80,7 +69,7 @@
                     });
 
                     //POST to Node new candidate block
-                    Util.CreatePostRequestToNode(statusCode, dataStream, response, dataObject);
+                    Util.CreatePostRequestToNode(dataObject);
 
                     blockFound = true;
                     break;
