@@ -30,6 +30,7 @@ router.get('/:tranHash/info', (req, res) => {
 //POST Send Transaction
 router.post('/send', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
+  console.log(req.body)
       let from = req.body.from;
       let to = req.body.to;
       let value = req.body.value;
@@ -40,7 +41,7 @@ router.post('/send', (req, res) => {
     
       //Calculate transaction hash SHA256
       let transactionHash = crypto
-          .calculateSHA256([from, to, value, fee, dateCreated, senderPubKey, senderSignature]);
+          .calculateSHA256({from, to, value, fee, dateCreated, senderPubKey, senderSignature});
 
       let minedInBlockIndex = undefined;
       let transferSuccessful = false;

@@ -54,23 +54,23 @@ module.exports.miningJob = (minedBy) => {
                              0, dateCoinBaseTr, "", "", coinBaseTransactionHash, index, true);
 
     let pendingTransactions = main.pendingTransactions;
+
     pendingTransactions.unshift(coinBaseTransaction);
-    let transactions = pendingTransactions;
 
     let prevBlockJson = JSON.stringify(this.getLatestBlock());
     let prevBlockHash = crypto.calculateSHA256(prevBlockJson);
     let difficulty = main.difficulty;
-    let blockDataHash = crypto.calculateSHA256({index, transactions, difficulty, 
+    let blockDataHash = crypto.calculateSHA256({index, pendingTransactions, difficulty, 
                             prevBlockHash, minedBy});
 
-    let jobForMining = new MiningJob(index, transactions, difficulty,
+    let jobForMining = new MiningJob(index, pendingTransactions, difficulty,
                             prevBlockHash, blockDataHash);
 
     main.miningJobs[minedBy] = jobForMining;
 
     let sentMiningJob = {
         index,
-        transactionsIncluded: transactions.length,
+        transactionsIncluded: pendingTransactions.length,
         difficulty,
         expectedReward,
         blockDataHash
@@ -105,7 +105,6 @@ module.exports.submitBlock = (req, minedBy) => {
 
         this.addBlock(newBlock);
         main.broadcast(main.responseLatestMsg());
-        console.log('block added: ' + JSON.stringify(newBlock));
         return true;
     //}
 
@@ -119,12 +118,12 @@ module.exports.addBlock = (newBlock) => {
         let index = newBlock.index;
         
         for(let i = 0; i < transactions.length; i++){
-           transactions[i].paid = true;
-           transactions[i].index = index;
+           transactions[i].minedInBlockIndex = true;
+           transactions[i].transferSuccessful = index;
         }
         
-        main.confirmedTransactions = main.pendingTransactions.filter(tr => tr.paid == true);
-        main.pendingTransactions = main.pendingTransactions.filter(tr => tr.paid == false);
+        main.confirmedTransactions = main.pendingTransactions.filter(tr => tr.minedInBlockIndex == true);
+        main.pendingTransactions = main.pendingTransactions.filter(tr => tr.minedInBlockIndex == false);
 
         newBlock.transactions = transactions;
         main.blockchain.push(newBlock);

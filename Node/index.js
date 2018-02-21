@@ -30,7 +30,7 @@ let getGenesisBlock = () => {
 };
 
 module.exports.blockchain = [getGenesisBlock()];
-module.exports.pendingTransactions = [];//Todo pending transaction's paid true / false 
+module.exports.pendingTransactions = [];
 module.exports.confirmedTransactions = [];
 module.exports.miningJobs = [];
 module.exports.difficulty = 5;
