@@ -6,6 +6,9 @@ namespace Wallet.Controllers
     using Newtonsoft.Json;
     using Wallet.Models.ViewModels;
     using Wallet.Services.Interfaces;
+    using System.IO;
+    using Newtonsoft.Json.Linq;
+    using System.Text;
 
     public class TransactionsController : Controller
     {
@@ -27,6 +30,7 @@ namespace Wallet.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         public IActionResult SendTransaction(string info, string url)
         {
@@ -40,15 +44,23 @@ namespace Wallet.Controllers
             string dateCreated = (model.DateCreated).ToString("o");
 
             //Create signature for request
-            string jsonResult = this.transactionService.CreateAndSignTransaction(
-                model.To,
-                model.Value,
-                model.Fee,
-                dateCreated,
-                privateKey);
+            SendTransactionBody bodyData = this.transactionService.CreateAndSignTransaction(model.To, model.Value, 
+                                                                         model.Fee, dateCreated, privateKey);
+            //Post to node and take responce
+            //var response = this.httpRequestService.Pots<ResponseSentTransactionVm>(url, bodyData);
+            JObject dataObject = JObject.FromObject(new
+            {
+                from = bodyData.From,
+                to = bodyData.To,
+                value = bodyData.Value,
+                fee = bodyData.Fee,
+                dateCreated = bodyData.DateCreated,
+                senderPubKey = bodyData.SenderPubKey,
+                senderSignature = bodyData.SenderSignature
+            });
 
-            var response = this.httpRequestService.Pots<ResponseSentTransactionVm>(url, jsonResult);
-
+            byte[] data1 = Encoding.ASCII.GetBytes(dataObject.ToString());
+            var response = HttpServices.PostRequest.Pots<ResponseSentTransactionVm>(url, data1);
             //Populate model with info and sent to view
             model.Info = info;
             model.Response = $"{response.Message}\nTransaction Hash: {response.TransactionHash}";

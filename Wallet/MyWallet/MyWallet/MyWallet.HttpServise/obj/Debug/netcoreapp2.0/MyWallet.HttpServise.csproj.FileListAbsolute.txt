@@ -1,0 +1,11 @@
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\bin\Debug\netcoreapp2.0\MyWallet.HttpServise.deps.json
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\bin\Debug\netcoreapp2.0\MyWallet.HttpServise.runtimeconfig.json
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\bin\Debug\netcoreapp2.0\MyWallet.HttpServise.runtimeconfig.dev.json
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\bin\Debug\netcoreapp2.0\MyWallet.HttpServise.dll
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.csprojResolveAssemblyReference.cache
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.csproj.CoreCompileInputs.cache
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.AssemblyInfoInputs.cache
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.AssemblyInfo.cs
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\bin\Debug\netcoreapp2.0\MyWallet.HttpServise.pdb
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.dll
+D:\BlockchainDev\Blockchain-System\Wallet\MyWallet\MyWallet\MyWallet.HttpServise\obj\Debug\netcoreapp2.0\MyWallet.HttpServise.pdb

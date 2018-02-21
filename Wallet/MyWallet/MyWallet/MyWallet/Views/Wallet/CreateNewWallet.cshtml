@@ -1,0 +1,16 @@
+﻿@model CreateNewWalletVm
+@{
+    ViewData["Title"] = "Create New Wallet";
+}
+<div class="container">
+    <h1>Create A New Wallet</h1>
+
+    <p>Generate a new wallet: random private key -> public key -> address</p>
+    <div>
+        <input type="button" value="Generate Now" onclick="location.href='@Url.Action("Create", "Wallet")'" class="btn btn-default active" />
+    </div>
+    <br />
+    <div>
+        @Html.Partial("_NewWalletPartial", Model)
+    </div>
+</div>

@@ -1,9 +1,12 @@
 ﻿namespace Wallet.Services.Interfaces
 {
     using Newtonsoft.Json;
-    using System;
+    using Newtonsoft.Json.Linq;
     using System.IO;
     using System.Net;
+    using System.Text;
+    using Wallet.Models.ViewModels;
+    using System.Collections.Specialized;
 
     public class HttpRequestService : IHttpRequestService
     {
@@ -27,79 +30,42 @@
         }
 
         //POST
-        public T Pots<T>(string resURL, object data)
+        public T Pots<T>(string resURL, SendTransactionBody data)
         {
-            var request = WebRequest.Create(resURL) as HttpWebRequest;
+            var request = (HttpWebRequest)WebRequest.Create(resURL);
 
             request.Method = "POST";
-            var jsonData = JsonConvert.SerializeObject(data);
-
-            using (StreamWriter writer = new StreamWriter(request.GetRequestStreamAsync().Result))
+            request.Credentials = CredentialCache.DefaultCredentials;
+            JObject dataObject = JObject.FromObject(new
             {
-                writer.Write(jsonData);
+                from = data.From,
+                to = data.To,
+                value = data.Value,
+                fee = data.Fee,
+                dateCreated = data.DateCreated,
+                senderPubKey = data.SenderPubKey,
+                senderSignature = data.SenderSignature
+            });
+
+            byte[] data1 = Encoding.ASCII.GetBytes(dataObject.ToString());
+
+            using (var dataStream = request.GetRequestStreamAsync().Result)
+            {
+                dataStream.Write(data1, 0, data1.Length);
             }
 
-            try
+            var response = request.GetResponseAsync().Result;
+
+
+            string responseString;
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
             {
-                using (var response = request.GetResponseAsync().Result)
-                {
-                    if (request.HaveResponse && response != null)
-                    {
-                        string responseString;
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            responseString = reader.ReadToEnd();
-                        }
-
-                        var responseData = JsonConvert.DeserializeObject<T>(responseString);
-
-                        return responseData;
-                    }
-                }
-            }
-            catch (Exception exs)
-            {
-                WebException wex = (WebException)exs.InnerException;
-                if (wex.Response != null)
-                {
-                    using (var errorResponse = (HttpWebResponse)wex.Response)
-                    {
-                        string error;
-                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                        {
-                             error = reader.ReadToEnd();
-                            //TODO: use JSON.net to parse this string and look at the error message
-                        }
-                        var responseData = JsonConvert.DeserializeObject<T>(error);
-
-                        return responseData;
-                    }
-                }
+                responseString = reader.ReadToEnd();
             }
 
-            return default(T);
+            var responseData = JsonConvert.DeserializeObject<T>(responseString);
+
+            return responseData;
         }
-
-        //request.Method = "POST";
-        //    var jsonData = JsonConvert.SerializeObject(data);
-
-        //    using (StreamWriter writer = new StreamWriter(request.GetRequestStreamAsync().Result))
-        //    {
-        //        writer.Write(jsonData);
-        //    }
-
-        //    var response = request.GetResponseAsync().Result;
-
-
-        //    string responseString;
-        //    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-        //    {
-        //        responseString = reader.ReadToEnd();
-        //    }
-
-        //    var responseData = JsonConvert.DeserializeObject<T>(responseString);
-
-        //    return responseData;
-        //}
     }
 }

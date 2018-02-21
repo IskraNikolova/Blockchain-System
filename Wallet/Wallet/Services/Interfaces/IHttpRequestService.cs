@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Wallet.Models.ViewModels;
 
 namespace Wallet.Services.Interfaces
 {
@@ -6,6 +7,6 @@ namespace Wallet.Services.Interfaces
     {
         T Get<T>(string resUrl);
 
-        T Pots<T>(string resURL, object data);
+        T Pots<T>(string resURL, SendTransactionBody data);
     }
 }

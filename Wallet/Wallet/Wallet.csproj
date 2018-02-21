@@ -42,4 +42,8 @@
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Wallet.HttpServices\Wallet.HttpServices.csproj" />
+  </ItemGroup>
+
 </Project>
