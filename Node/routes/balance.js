@@ -17,7 +17,7 @@ router.get('/:address/confirmations/:confirmationsIndex', (req, res) => {
          confirmations,
          confirmedBalance,
          lastMinedBalance,
-        "pendingBalance": {"confirmations": 0, "balance": `${pendingBalance}.00`}
+         pendingBalance: {"confirmations": 0, "balance": pendingBalance}
     }
 
     res.status(200).json(balance)

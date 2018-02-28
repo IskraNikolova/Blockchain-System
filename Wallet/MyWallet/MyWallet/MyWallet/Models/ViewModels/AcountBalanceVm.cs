@@ -8,10 +8,10 @@ namespace Wallet.Models.ViewModels
 
         public int Confirmations { get; set; }
 
-        public Balance ConfirmedBalance { get; set; }
+        public BalanceD ConfirmedBalance { get; set; }
 
-        public Balance LastMinedBalance { get; set; }
+        public BalanceD LastMinedBalance { get; set; }
 
-        public Balance PendingBalance { get; set; }
+        public BalanceD PendingBalance { get; set; }
     }
 }

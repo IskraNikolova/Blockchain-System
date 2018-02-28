@@ -60,7 +60,7 @@ namespace Wallet.Controllers
             string resUrl = $"http://localhost:5555/balance/{address}/confirmations/6";
             AcountBalanceVm responce = this.httpRequestService.Get<AcountBalanceVm>(resUrl);
 
-            var balance = responce.ConfirmedBalance.BalanceData;
+            var balance = responce.ConfirmedBalance.Balance;
             if(balance < model.Value)
             {
                 TempData["errorMessage"] = "Insufficient balance!!!";

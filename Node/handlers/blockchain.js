@@ -118,12 +118,12 @@ module.exports.addBlock = (newBlock) => {
         let index = newBlock.index;
         
         for(let i = 0; i < transactions.length; i++){
-           transactions[i].minedInBlockIndex = true;
-           transactions[i].transferSuccessful = index;
+           transactions[i].minedInBlockIndex = index;
+           transactions[i].transferSuccessful = true;
         }
         
-        main.confirmedTransactions = main.pendingTransactions.filter(tr => tr.minedInBlockIndex == true);
-        main.pendingTransactions = main.pendingTransactions.filter(tr => tr.minedInBlockIndex == false);
+        main.confirmedTransactions = main.pendingTransactions.filter(tr => tr.transferSuccessful == true);
+        main.pendingTransactions = main.pendingTransactions.filter(tr => tr.transferSuccessful == false);
 
         newBlock.transactions = transactions;
         main.blockchain.push(newBlock);

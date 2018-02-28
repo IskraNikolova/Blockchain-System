@@ -41,7 +41,7 @@ router.post('/send', (req, res) => {
   //Calculate transaction hash SHA256
   let transactionString = JSON.stringify({from, to, value, fee, dateCreated, senderPubKey, senderSignature})
             .replace(/\s/g, "");
-    console.log(transactionString);        
+    
   let transactionHash = crypto
       .calculateSHA256(transactionString);
 

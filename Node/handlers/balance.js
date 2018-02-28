@@ -39,21 +39,21 @@ module.exports.getBalanceWithPendingTransaction = (userAddress) => {
 
     blockChain.forEach(block => {
         block.transactions.forEach(transaction => {
-            if(transaction.from == userAddress){
-                balance -= transaction.value;
-            }else if(transaction.to == userAddress){
-                balance += transaction.value;
+            if(transaction.from == userAddress){               
+                balance -= Number(transaction.value);
+            }else if(transaction.to == userAddress){        
+                balance += Number(transaction.value);            
             }
         });
     });
 
     pendingTransactions.forEach(transaction => {
         if(transaction.from == userAddress){
-            balance -= transaction.value;
+            balance -= Number(transaction.value);
         }else if(transaction.to == userAddress){
-            balance += transaction.value;
+            balance += Number(transaction.value);
         }
     });
-  
+
      return balance;
 }

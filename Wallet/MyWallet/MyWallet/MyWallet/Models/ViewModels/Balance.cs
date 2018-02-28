@@ -1,9 +1,9 @@
 ﻿namespace MyWallet.Models.ViewModels
 {
-    public class Balance
+    public class BalanceD
     {
         public int Confirmations { get; set; }
 
-        public double BalanceData { get; set; }
+        public double Balance { get; set; }
     }
 }

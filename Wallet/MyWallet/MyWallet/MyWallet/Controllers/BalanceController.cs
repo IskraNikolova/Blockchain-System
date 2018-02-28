@@ -28,9 +28,9 @@ namespace Wallet.Controllers
             var blockChainNode = bm.BlockChainNode;
             string resUrl = $"{blockChainNode}/balance/{address}/confirmations/6";
             AcountBalanceVm responce = this.httpRequestService.Get<AcountBalanceVm>(resUrl);
-            bm.Info = $"Balance (confirmed): {responce.ConfirmedBalance.BalanceData}\n" +
-                      $"Balance (1 confirmation): {responce.LastMinedBalance.BalanceData}\n" +
-                      $"Balance (pending): {responce.PendingBalance.BalanceData}";
+            bm.Info = $"Balance (confirmed): {responce.ConfirmedBalance.Balance}\n" +
+                      $"Balance (1 confirmation): {responce.LastMinedBalance.Balance}\n" +
+                      $"Balance (pending): {responce.PendingBalance.Balance}";
             return View(bm);
         }
     }
