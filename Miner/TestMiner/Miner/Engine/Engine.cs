@@ -1,8 +1,6 @@
 ﻿namespace Miner
 {
     using System;
-    using System.IO;
-    using System.Net;
     using System.Diagnostics;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;

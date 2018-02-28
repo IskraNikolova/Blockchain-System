@@ -2,6 +2,7 @@ namespace Wallet.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Wallet.Models.BindingModels;
+    using Wallet.Models.ViewModels;
     using Wallet.Services.Interfaces;
 
     public class BalanceController : Controller
@@ -26,9 +27,11 @@ namespace Wallet.Controllers
             var address = bm.Address;
             var blockChainNode = bm.BlockChainNode;
             string resUrl = $"{blockChainNode}/balance/{address}/confirmations/6";
-            var responce = this.httpRequestService.Get<object>(resUrl);
-             bm.Info = responce + "";
-             return View(bm);
+            AcountBalanceVm responce = this.httpRequestService.Get<AcountBalanceVm>(resUrl);
+            bm.Info = $"Balance (confirmed): {responce.ConfirmedBalance.BalanceData}\n" +
+                      $"Balance (1 confirmation): {responce.LastMinedBalance.BalanceData}\n" +
+                      $"Balance (pending): {responce.PendingBalance.BalanceData}";
+            return View(bm);
         }
     }
 }

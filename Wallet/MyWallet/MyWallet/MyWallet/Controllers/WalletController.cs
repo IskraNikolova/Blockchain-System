@@ -5,8 +5,6 @@ namespace Wallet.Controllers
     using Wallet.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
     using Newtonsoft.Json;
-    using System.Threading.Tasks;
-    using System;
 
     public class WalletController : Controller
     {
@@ -19,36 +17,21 @@ namespace Wallet.Controllers
 
         public IActionResult CreateNewWallet()
         {
-            CreateNewWalletVm model = new CreateNewWalletVm
-            {
-                PrivateKey = "",
-                PublicKey = "",
-                Address = "",
-                Info = ""
-            };
+            CreateNewWalletVm model = new CreateNewWalletVm();
             return View(model);
         }
 
         public IActionResult Create()
         {           
             CreateNewWalletVm model = this.service.RandomPrivateKeyToAddress();
-
             //Set serializable objects to Session
-            HttpContext.Session.SetString(model.Address, JsonConvert.SerializeObject(model));
-            ViewData["Login"] = "Yes";
+            HttpContext.Session.SetString(model.Address, JsonConvert.SerializeObject(model)); 
             return View("CreateNewWallet", model);
         }
 
         public IActionResult OpenExistingWallet()
         {
             var model = new OpenExistingWalletVm();
-            //{
-            //    PrivateKey = "",
-            //    PublicKey = "",
-            //    Address = "",
-            //    Info = ""
-            //};
-
             return View(model);
         }
 
@@ -59,7 +42,6 @@ namespace Wallet.Controllers
 
             //Set serializable objects to Session
             HttpContext.Session.SetString(model.Address, JsonConvert.SerializeObject(model));
-            ViewData["Login"] = "Yes";
             return View("OpenExistingWallet", model);
         }
     }

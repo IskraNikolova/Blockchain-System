@@ -1,0 +1,15 @@
+﻿@model ResponseModel
+@{
+    ViewBag.Title = "Success Transaction";
+}
+
+<div class="body-content">
+    <div class="panel">
+        <div>We sent <span style="color: green; font-size: 50px">1</span> coins to address</div>
+        <div style="color: blue; font-size: 20px">@Model.Address</div>
+        <br />
+        <div style="color: blue; font-size: 15px">tx: @Model.TransactionHash</div>
+        <input type="submit" class="btn btn-group-justified btn-info" value="Back" />
+    </div>
+</div>
+

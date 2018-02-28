@@ -1,15 +1,21 @@
-@model SignTransactionVm
+@model TransactionModel
 @{
     ViewData["Title"] = "SendTransaction";
 }
 
 <div class="container">
     <h1>Send Transaction</h1>
-    
+    @if (TempData.ContainsKey("errorMessage"))
+    {
+        <div style="color:red">@TempData["errorMessage"]</div>
+    }
     <form form asp-controller="Transactions" asp-action="SignTransaction" class="form-group">
         Sender: <input type="text" asp-for="From" class="form-control" />
+        <span asp-validation-for="From" class="text-danger"></span>
         Recipient: <input type="text" asp-for="To" class="form-control" />
-        Value: <input type="text" asp-for="Value" class="form-control" />
+        <span asp-validation-for="To" class="text-danger"></span>
+        Value: <input type="number" asp-for="Value" class="form-control" />
+        <span asp-validation-for="Value" class="text-danger"></span>
         <input type="submit" value="Sign Transaction" class="btn btn-default active" />
     </form>
     <br />

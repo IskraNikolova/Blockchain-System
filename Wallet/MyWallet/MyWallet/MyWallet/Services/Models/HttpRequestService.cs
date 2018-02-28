@@ -29,44 +29,6 @@
             return responseData;
         }
 
-        //POST
-        public T Pots<T>(string resURL, SendTransactionBody data)
-        {
-            var request = WebRequest.Create(resURL) as HttpWebRequest;
-
-            request.Method = "POST";
-            request.Credentials = CredentialCache.DefaultCredentials;
-            JObject dataObject = JObject.FromObject(new
-            {
-                from = data.From,
-                to = data.To,
-                value = data.Value,
-                fee = data.Fee,
-                dateCreated = data.DateCreated,
-                senderPubKey = data.SenderPubKey,
-                senderSignature = data.SenderSignature
-            });
-
-            var jsonData = JsonConvert.SerializeObject(dataObject);
-            using (StreamWriter writer = new StreamWriter(request.GetRequestStream()))
-            {
-                writer.Write(jsonData);
-            }
-
-            var response = request.GetResponse();
-            string responseString;
-
-            using(StreamReader reader = new StreamReader(response.GetResponseStream()))
-            {
-                responseString = reader.ReadToEnd();
-            }
-
-            var responseData = JsonConvert.DeserializeObject<T>(responseString);
-
-            return responseData;
-        }
-
-
         public ResponseSentTransactionVm Post(string url, SendTransactionBody data)
         {
             JObject dataObject = JObject.FromObject(new

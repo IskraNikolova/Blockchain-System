@@ -17,7 +17,6 @@
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            ViewData["Login"] = "No";
             return View("Index");
         }
     }

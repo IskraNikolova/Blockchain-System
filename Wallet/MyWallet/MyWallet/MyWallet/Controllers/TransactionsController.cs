@@ -6,8 +6,6 @@ namespace Wallet.Controllers
     using Newtonsoft.Json;
     using Wallet.Models.ViewModels;
     using Wallet.Services.Interfaces;
-    using Newtonsoft.Json.Linq;
-    using System.Text;
 
     public class TransactionsController : Controller
     {
@@ -24,30 +22,59 @@ namespace Wallet.Controllers
         [HttpGet]
         public IActionResult SendTransaction()
         {
-            SignTransactionVm model = new SignTransactionVm();
+            TransactionModel model = new TransactionModel();
 
             return View(model);
         }
 
+        public IActionResult SignTransaction(TransactionModel model)
+        {
+            var result = model;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    result = this.GetModel(model);
+                }
+                catch
+                {
+                    TempData["errorMessage"] = "Invalid Sender Address!";
+                }
+
+            }
+
+            return View("SendTransaction", result);
+        }
 
         [HttpPost]
         public IActionResult SendTransaction(string info, string url)
         {
-            var model = JsonConvert.DeserializeObject<SignTransactionVm>(info);       
-            
+            var model = JsonConvert.DeserializeObject<TransactionModel>(info);
+
             //Take private key from session
             var obj = HttpContext.Session.GetString(model.From);
             var jsonModel = JsonConvert.DeserializeObject<OpenExistingWalletVm>(obj);
             var privateKey = jsonModel.PrivateKey;
+            var address = jsonModel.Address;
+
+            string resUrl = $"http://localhost:5555/balance/{address}/confirmations/6";
+            AcountBalanceVm responce = this.httpRequestService.Get<AcountBalanceVm>(resUrl);
+
+            var balance = responce.ConfirmedBalance.BalanceData;
+            if(balance < model.Value)
+            {
+                TempData["errorMessage"] = "Insufficient balance!!!";
+                return View("SendTransaction", model);
+            }
 
             string dateCreated = (model.DateCreated).ToString("o");
 
             //Create signature for request
             SendTransactionBody bodyData = this.transactionService.CreateAndSignTransaction(model.To, model.Value,
-                                                                         model.Fee, dateCreated, privateKey);
+                                                                            model.Fee, dateCreated, privateKey);
             //Post to node and take responce
-            //var response = this.httpRequestService.Pots<ResponseSentTransactionVm>(url, bodyData);
             var response = this.httpRequestService.Post(url, bodyData);
+
             //Populate model with info and sent to view
             model.Info = info;
             model.Response = $"{response.Message}\nTransaction Hash: {response.TransactionHash}";
@@ -56,18 +83,12 @@ namespace Wallet.Controllers
             return View("SendTransaction", result);
         }
 
-        public IActionResult SignTransaction(SignTransactionVm model)
-        {
-            var result = this.GetModel(model);
-            return View("SendTransaction", result);
-        }
-
-        private SignTransactionVm GetModel(SignTransactionVm model)
+        private TransactionModel GetModel(TransactionModel model)
         {
             var obj = HttpContext.Session.GetString(model.From);
             var value = JsonConvert.DeserializeObject<OpenExistingWalletVm>(obj);
 
-            SignTransactionVm result = new SignTransactionVm
+            var  result = new TransactionModel
             {
                 From = model.From,
                 To = model.To,
@@ -82,8 +103,8 @@ namespace Wallet.Controllers
             string info = JsonConvert.SerializeObject(result);
             result.Info = info.Substring(0, info.LastIndexOf(','));
             result.Info = result.Info.Substring(0, result.Info.LastIndexOf(',')) + "}";
-
+            
             return result;
-        }
+        }//todo
     }
 }

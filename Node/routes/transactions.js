@@ -30,44 +30,46 @@ router.get('/:tranHash/info', (req, res) => {
 //POST Send Transaction
 router.post('/send', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log(req.body)
-      let from = req.body.from;
-      let to = req.body.to;
-      let value = req.body.value;
-      let fee = req.body.fee;
-      let dateCreated = req.body.dateCreated;
-      let senderPubKey = req.body.senderPubKey;
-      let senderSignature = req.body.senderSignature;
-    
-      //Calculate transaction hash SHA256
-      let transactionHash = crypto
-          .calculateSHA256({from, to, value, fee, dateCreated, senderPubKey, senderSignature});
+  let from = req.body.from;
+  let to = req.body.to;
+  let value = req.body.value;
+  let fee = req.body.fee;
+  let dateCreated = req.body.dateCreated;
+  let senderPubKey = req.body.senderPubKey;
+  let senderSignature = req.body.senderSignature;
 
-      let minedInBlockIndex = undefined;
-      let transferSuccessful = false;
-    
-      //let sameTransaction = pendingTransactions.getPendingTransactions()
-           // .filter(t => t.transactionHash == transactionHash)[0];
+  //Calculate transaction hash SHA256
+  let transactionString = JSON.stringify({from, to, value, fee, dateCreated, senderPubKey, senderSignature})
+            .replace(/\s/g, "");
+    console.log(transactionString);        
+  let transactionHash = crypto
+      .calculateSHA256(transactionString);
 
-      //if(!sameTransaction){
-            let transaction = new Transaction(
-            from, to, value, fee,
-            dateCreated, senderPubKey, senderSignature,
-            transactionHash, minedInBlockIndex, transferSuccessful);   
-            //TODO Validate transaction & Send to other peers
+  let minedInBlockIndex = undefined;
+  let transferSuccessful = false;
 
-            pendingTransactions.insertTransaction(transaction);
-          
-            res.status(201).json({
-              message: 'Transaction successfully sent.',
-              transactionHash
-            })
-            res.end()
-      //}else{
-        //res.status(400).json({
-        //  message: "Duplicated Transaction!!!"
-       // })  
-     // }
+  let sameTransaction = pendingTransactions.getPendingTransactions()
+        .filter(t => t.transactionHash == transactionHash)[0];
+
+  if(!sameTransaction){
+        let transaction = new Transaction(
+        from, to, value, fee,
+        dateCreated, senderPubKey, senderSignature,
+        transactionHash, minedInBlockIndex, transferSuccessful);   
+        //TODO Validate transaction & Send to other peers
+
+        pendingTransactions.insertTransaction(transaction);
+      
+        res.status(201).json({
+          message: 'Transaction successfully sent.',
+          transactionHash
+        })
+        res.end()
+  }else{
+    res.status(400).json({
+    message: "Duplicated Transaction!!!"
+    })  
+   }
 })  
 
 module.exports = router
