@@ -35,7 +35,7 @@
             dataStream.Write(blockFoundData, 0, blockFoundData.Length);
             dataStream.Close();
 
-            WebResponse response = request.GetResponse();
+            WebResponse response = request.GetResponse();//todo get 400
             string responseString;
             statusCode = ((HttpWebResponse)response).StatusCode;
 
