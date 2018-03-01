@@ -3,9 +3,9 @@ const router = new express.Router()
 const main = require('./../index')
 
 router.get('/', (req, res) => {
-    let pendingTransactions = main.pendingTransactions.length;
-    let confirmedTransactions = main.confirmedTransactions.length;
-    let blocks = main.blockchain.length;
+    let pendingTransactions = main.pendingTransactions;
+    let confirmedTransactions = main.confirmedTransactions;
+    let blocks = main.blockchain;
     let peers = main.peers;
     let difficulty = main.difficulty;
     res.setHeader('Content-Type', 'application/json');

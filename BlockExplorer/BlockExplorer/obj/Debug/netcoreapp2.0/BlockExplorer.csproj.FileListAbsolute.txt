@@ -1,0 +1,11 @@
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\bin\Debug\netcoreapp2.0\BlockExplorer.deps.json
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\bin\Debug\netcoreapp2.0\BlockExplorer.runtimeconfig.json
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\bin\Debug\netcoreapp2.0\BlockExplorer.runtimeconfig.dev.json
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\bin\Debug\netcoreapp2.0\BlockExplorer.dll
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\bin\Debug\netcoreapp2.0\BlockExplorer.pdb
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.csprojResolveAssemblyReference.cache
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.csproj.CoreCompileInputs.cache
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.AssemblyInfoInputs.cache
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.AssemblyInfo.cs
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.dll
+D:\BlockchainDev\Blockchain-System\BlockExplorer\BlockExplorer\obj\Debug\netcoreapp2.0\BlockExplorer.pdb
