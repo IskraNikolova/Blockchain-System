@@ -10,15 +10,15 @@ router.get('/', (req, res) => {
     let difficulty = main.difficulty;
     res.setHeader('Content-Type', 'application/json');
     let info =
-        {
-            "about": "Block-Chain/0.9-csharp",
-            "name": "Varna-01",
-             peers,
-             difficulty,
-             blocks,
-             confirmedTransactions,
-             pendingTransactions
-        };
+    {
+        "about": "Block-Chain/0.9-csharp",
+        "name": "Varna-01",
+            peers,
+            difficulty,
+            blocks,
+            confirmedTransactions,
+            pendingTransactions
+    };
 
     res.status(200).json(info)
  })
