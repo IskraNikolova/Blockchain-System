@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public string[] Peers { get; set; }
+        public int Peers { get; set; }
 
         public int Difficulty { get; set; }
 

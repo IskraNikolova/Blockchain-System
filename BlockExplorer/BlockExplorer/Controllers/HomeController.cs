@@ -3,11 +3,19 @@
     using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using BlockExplorer.Models;
+    using BlockExplorer.Services.Interfaces;
 
     public class HomeController : Controller
     {
-        public IActionResult Index(BlocksInfoVm model)
+        private readonly IHttpRequestService httpRequestService;
+
+        public HomeController(IHttpRequestService httpRequestService)
         {
+            this.httpRequestService = httpRequestService;
+        }
+        public IActionResult Index()
+        {
+            BlocksInfoVm model = this.httpRequestService.Get<BlocksInfoVm>("http://localhost:5555/info");
             return View(model);
         }
 

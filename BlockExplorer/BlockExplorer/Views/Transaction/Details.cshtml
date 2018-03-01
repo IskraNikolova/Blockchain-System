@@ -1,0 +1,51 @@
+﻿@model BlockExplorer.Models.Transaction
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2 style="color: gray">Transaction  @Model.TransactionHash</h2>
+
+<div class="panel panel-info">
+    <div class="panel-heading">Block Information</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">TxHash:</div>
+            <div class="col-sm-8">@Model.TransactionHash</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">TxReceipt Status:</div>
+            <div class="col-sm-8" style="color: green">Success"</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Block Height:</div>
+            <div class="col-sm-8"><a href="@Url.Action("Index", "Block", new { Model.MinedInBlockIndex })">@Model.MinedInBlockIndex</a></div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">TimeStamp:</div>
+            <div class="col-sm-8">28 mins ago (Mar-01-2018 07:53:20 PM +UTC)</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">From:</div>
+            <div class="col-sm-8">@Model.From</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">To:</div>
+            <div class="col-sm-8">@Model.To</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Value:</div>
+            <div class="col-sm-8">@Model.Value:</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Actual Tx Cost/Fee:</div>
+            <div class="col-sm-8">@Model.Fee</div>
+        </div>
+    </div>
+</div>

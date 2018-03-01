@@ -21,5 +21,9 @@
         public DateTime DateCreated { get; set; }
 
         public string BlockHash { get; set; }
+
+        public string Age  => this.DateCreated.ToString();
+
+        public int Size { get; set; }
     }
 }

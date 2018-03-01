@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<h3 style="color: gray">Transactions  :: For Block @Model[0].MinedInBlockIndex</h3>
+<hr />
+<div>A total of @Model.Length transactions found</div>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">TxHash</th>
+            <th scope="col">Block</th>
+            <th scope="col">Age</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Value</th>
+            <th scope="col">Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            string tranHash = transaction.TransactionHash;
+            <tr>
+                <th><a href="@Url.Action("Details", "Transaction", new { tranHash })"> @tranHash.Substring(0, 14) ...</a></th>
+                <td>@transaction.MinedInBlockIndex</td>
+                <td>10 hour ago</td>
+                <td>@transaction.From</td>
+                <td>@transaction.To</td>
+                <td>@transaction.Value</td>
+                <td>@transaction.Fee</td>
+            </tr>
+        }
+    </tbody>
+</table>

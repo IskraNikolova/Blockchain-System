@@ -1,0 +1,56 @@
+﻿@model BlockExplorer.Models.Block
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Block #@Model.Index</h2>
+
+<div class="panel panel-info">
+    <div class="panel-heading">Block Information</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">Height:</div>
+            <div class="col-sm-8">@Model.Index</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">TimeStamp:</div>
+            <div class="col-sm-8">51 mins ago (Mar-01-2018 01:40:42 PM +UTC)</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Transactions:</div>
+            <div class="col-sm-8"><a href="@Url.Action("Index", "Transaction", new { Model.Index })">@Model.Transactions.Length transactions</a> in this block</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Hash:</div>
+            <div class="col-sm-8">@Model.BlockDataHash</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Parent Hash:</div>
+            <div class="col-sm-8">@Model.PrevBlockHash</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Mined By:</div>
+            <div class="col-sm-8">@Model.MinedBy</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Difficulty:</div>
+            <div class="col-sm-8">@Model.PrevBlockHash</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Size:</div>
+            <div class="col-sm-8">@Model.Size</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">Nonce:</div>
+            <div class="col-sm-8">@Model.Nonce</div>
+        </div>
+    </div>
+</div>
