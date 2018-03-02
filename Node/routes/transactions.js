@@ -57,7 +57,7 @@ router.post('/send', (req, res) => {
       
         res.status(201).json({
           message: 'Transaction successfully sent.',
-          transactionHash
+          transactionHash: transaction.transactionHash
         })
         res.end()
   }else{

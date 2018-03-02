@@ -8,12 +8,19 @@ const validator = require('./../utils/validate')
 module.exports.miningJob = (minedBy) => {	
     let value = 5000350;
     let index = this.getLatestBlock().index + 1;
+
+    //Get coinbase transaction
     let coinBaseTransaction = this.getCoinBaseTransaction(index, minedBy, value);
+
+
     let pendingTransactions = main.pendingTransactions;
     let transactions = pendingTransactions;
     main.pendingTransactions = main.pendingTransactions.filter(tr => tr.transferSuccessful == false);
+
+    //Calculate previous block hash
     let prevBlockHash = this.calculateHashForBlock(this.getLatestBlock()); 
     let difficulty = main.difficulty;
+
     let blockDataHash = crypto.calculateSHA256({index, transactions: transactions.unshift(coinBaseTransaction), difficulty, 
                                prevBlockHash, minedBy});
 
@@ -88,11 +95,15 @@ module.exports.getLatestBlock = () => main.blockchain[main.blockchain.length - 1
 module.exports.calculateHashForBlock = (block) => {
     let blockHash = this.calculateHash(
         block.index, 
+        block.transactions,
+        block.difficulty,
         block.prevBlockHash, 
+        block.minedBy,
+        block.blockDataHash,
+        block.nonce,
         block.dateCreated, 
-        block.transactions, 
-        block.nonce);
-
+       );
+       
     return blockHash;
 }
 

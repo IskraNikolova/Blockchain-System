@@ -33,7 +33,7 @@ module.exports.blockchain = [getGenesisBlock()];
 module.exports.pendingTransactions = [];
 module.exports.confirmedTransactions = [];
 module.exports.miningJobs = [];
-module.exports.difficulty = 5;
+module.exports.difficulty = 4;
 module.exports.peers = initialPeers.length;
 
 module.exports.sockets = [];
