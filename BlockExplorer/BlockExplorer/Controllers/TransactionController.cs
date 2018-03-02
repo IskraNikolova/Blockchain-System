@@ -22,9 +22,9 @@
         }
 
 
-        public IActionResult Details(string tranHash)
+        public IActionResult Details([FromQuery]string tranHash)
         {
-            Transaction transaction = 
+            var transaction = 
                 this.httpRequestService.Get<Transaction>($"http://localhost:5555/transactions/{tranHash}/info");
 
             return View(transaction);

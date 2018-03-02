@@ -25,7 +25,7 @@
         {
             string tranHash = transaction.TransactionHash;
             <tr>
-                <th><a href="@Url.Action("Details", "Transaction", new { tranHash })"> @tranHash.Substring(0, 14) ...</a></th>
+                <th><a href="@Url.Action("Details", "Transaction", new { tranHash = tranHash })"> @tranHash.Substring(0, 14) ...</a></th>
                 <td>@transaction.MinedInBlockIndex</td>
                 <td>10 hour ago</td>
                 <td>@transaction.From</td>
