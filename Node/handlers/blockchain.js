@@ -103,12 +103,12 @@ module.exports.calculateHashForBlock = (block) => {
         block.nonce,
         block.dateCreated, 
        );
-       
+
     return blockHash;
 }
 
-module.exports.calculateHash = (index, prevBlockHash, dateCreated, transactions, nonce) => {
-    return crypto.calculateSHA256({index, prevBlockHash, dateCreated, transactions, nonce});
+module.exports.calculateHash = (index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash, nonce, dateCreated) => {
+    return crypto.calculateSHA256({index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash, nonce, dateCreated});
 }
 
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
