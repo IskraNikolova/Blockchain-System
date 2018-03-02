@@ -74,10 +74,10 @@
             {
                 from = senderAddress,
                 to = recipientAddress,
-                senderPubKey = senderPubKeyCompressed,
                 value = value,
                 fee = fee,
-                dateCreated = iso8601datetime
+                dateCreated = iso8601datetime,
+                senderPubKey = senderPubKeyCompressed
             };
 
             string tranJson = JsonConvert.SerializeObject(tran);
@@ -94,8 +94,8 @@
                 SenderPubKey = senderPubKeyCompressed,
                 SenderSignature = new string[]
                 {
-                tranSignature[0].ToString(16),
-                tranSignature[1].ToString(16)
+                    tranSignature[0].ToString(16),
+                    tranSignature[1].ToString(16)
                 }
             };
 
