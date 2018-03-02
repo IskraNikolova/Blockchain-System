@@ -6,7 +6,8 @@ const {randomBytes} = require('crypto')
 const secp256k1 = require('secp256k1')
 
 module.exports.calculateSHA256 = (obj) => {
-    return cryptoJs.SHA256(obj).toString()
+    let hash = cryptoJs.SHA256(JSON.stringify(obj).replace(/\s/g, "")).toString();
+    return hash;
 }
 
 module.exports.hashAndBuffer = (obj) => {

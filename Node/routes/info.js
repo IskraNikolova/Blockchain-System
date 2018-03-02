@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     let peers = main.peers;
     let difficulty = main.difficulty;
     res.setHeader('Content-Type', 'application/json');
-    
+
     let info =
     {
         "about": "Block-Chain/0.9-csharp",

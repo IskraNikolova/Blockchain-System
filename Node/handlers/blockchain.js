@@ -12,15 +12,15 @@ module.exports.miningJob = (minedBy) => {
     //Get coinbase transaction
     let coinBaseTransaction = this.getCoinBaseTransaction(index, minedBy, value);
 
-    let pendingTransactions = main.pendingTransactions;
-    let transactions = pendingTransactions;
+    let transactions = main.pendingTransactions;
+    let transactionsIncluded = transactions.unshift(coinBaseTransaction);
     main.pendingTransactions = main.pendingTransactions.filter(tr => tr.transferSuccessful == false);
 
     //Calculate previous block hash
     let prevBlockHash = this.calculateHashForBlock(this.getLatestBlock()); 
     let difficulty = main.difficulty;
 
-    let blockDataHash = crypto.calculateSHA256({index, transactions: transactions.unshift(coinBaseTransaction), difficulty, 
+    let blockDataHash = crypto.calculateSHA256({index, transactions, difficulty, 
                                prevBlockHash, minedBy});
 
     let jobForMining = new MiningJob(index, transactions, difficulty,
@@ -30,7 +30,7 @@ module.exports.miningJob = (minedBy) => {
 
     let sentMiningJob = {
         index,
-        transactionsIncluded: transactions.length,
+        transactionsIncluded,
         difficulty,
         expectedReward: value,
         blockDataHash
@@ -45,16 +45,15 @@ module.exports.submitBlock = (req, minedBy) => {
     const blockHash = req.body.blockHash;
 
     let miningJob = main.miningJobs[minedBy];
-    let difficulty = main.difficulty;
     let blockDataHash = miningJob.blockDataHash;
     let blockHashForCheck = crypto.calculateSHA256({blockDataHash, nonce, dateCreated});
-    //let isValid = validator.validateBlockHash(blockHashForCheck, blockHash, difficulty);
+    //let isValid = validator.validateBlockHash(blockHashForCheck, blockHash, miningJob.difficulty);
 
    //if(isValid){
         let newBlock = new Block(
             miningJob.index,
             miningJob.transactions,
-            difficulty,
+            miningJob.difficulty,
             miningJob.prevBlockHash,
             minedBy,
             blockDataHash,
