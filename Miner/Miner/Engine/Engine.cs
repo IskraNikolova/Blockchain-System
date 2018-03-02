@@ -27,14 +27,17 @@
         {
             //Create GET request 
             string responseFromNode = Util.CreateGetRequestToNode();
-
+           
             //Write info for starting work
             BlockTemplate blockTemplate = JsonConvert.DeserializeObject<BlockTemplate>(responseFromNode);
+            string hash = blockTemplate.BlockDataHash;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nStart new task:");
-            Console.WriteLine("Block Index: {0}", blockTemplate.Index);
-            Console.WriteLine("Expected Reward: {0}", blockTemplate.ExpectedReward);
-            Console.WriteLine("Block Data Hash: {0}", blockTemplate.BlockDataHash);
-            Console.WriteLine("Difficulty: {0}\n", blockTemplate.Difficulty);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Number: {0}  ", blockTemplate.Index);
+            Console.Write("reward: {0}  ", blockTemplate.ExpectedReward);
+            Console.Write("hash: {0}... ", hash.Substring(0, 12));
+            Console.Write("difficulty: {0}\n", blockTemplate.Difficulty);
 
             long nonce = 0;
             string timestamp = DateTime.UtcNow.ToString("o");
@@ -56,8 +59,10 @@
                 int expectedSum = 48 * blockTemplate.Difficulty;
                 if (sumOfFirstSymbols == expectedSum)
                 {
-                    Console.WriteLine("!!! Block found !!!");
-                    Console.WriteLine($"Block Hash: {blockHash}\n");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("--------------------------------------------------------");
+                    Console.WriteLine($"Found Block Hash: {blockHash}\n");
+                    Console.WriteLine("--------------------------------------------------------");
 
                     JObject dataObject = JObject.FromObject(new
                     {
