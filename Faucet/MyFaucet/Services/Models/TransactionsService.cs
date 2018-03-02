@@ -31,10 +31,10 @@
             {
                 from = senderAddress,
                 to = recipientAddress,
-                senderPubKey = senderPubKeyCompressed,
                 value = value,
                 fee = fee,
-                dateCreated = iso8601datetime
+                dateCreated = iso8601datetime,
+                senderPubKey = senderPubKeyCompressed,
             };
 
             string tranJson = JsonConvert.SerializeObject(tran);

@@ -44,7 +44,7 @@
 
                 //Create signature for request
                 SendTransactionBody bodyData = this.transactionService.CreateAndSignTransaction(address, 1,
-                                     0, dateCreated, faucetPrivateKey);
+                                     10, dateCreated, faucetPrivateKey);
 
                 ResponseModel responseTransaction = this.httpRequestService.Post($"{url}/transactions/send", bodyData);
                 responseTransaction.Address = address;
