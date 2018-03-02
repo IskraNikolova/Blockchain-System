@@ -12,7 +12,6 @@ module.exports.miningJob = (minedBy) => {
     //Get coinbase transaction
     let coinBaseTransaction = this.getCoinBaseTransaction(index, minedBy, value);
 
-
     let pendingTransactions = main.pendingTransactions;
     let transactions = pendingTransactions;
     main.pendingTransactions = main.pendingTransactions.filter(tr => tr.transferSuccessful == false);
@@ -99,14 +98,13 @@ module.exports.calculateHashForBlock = (block) => {
         block.difficulty,
         block.prevBlockHash, 
         block.minedBy,
-        block.blockDataHash
        );
 
     return blockHash;
 }
 
-module.exports.calculateHash = (index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash) => {
-    return crypto.calculateSHA256({index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash});
+module.exports.calculateHash = (index, transactions, difficulty, prevBlockHash, minedBy) => {
+    return crypto.calculateSHA256({index, transactions, difficulty, prevBlockHash, minedBy});
 }
 
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
