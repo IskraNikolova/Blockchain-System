@@ -38,12 +38,9 @@ router.post('/send', (req, res) => {
   let senderPubKey = req.body.senderPubKey;
   let senderSignature = req.body.senderSignature;
 
-  //Calculate transaction hash SHA256
-  let transactionString = JSON.stringify({from, to, value, fee, dateCreated, senderPubKey, senderSignature})
-            .replace(/\s/g, "");
-    
+ //validate sugnature
   let transactionHash = crypto
-      .calculateSHA256(transactionString);
+      .calculateSHA256({from, to, value, fee, dateCreated, senderPubKey, senderSignature});
 
   let minedInBlockIndex = undefined;
   let transferSuccessful = false;
@@ -55,9 +52,7 @@ router.post('/send', (req, res) => {
         let transaction = new Transaction(
         from, to, value, fee,
         dateCreated, senderPubKey, senderSignature,
-        transactionHash, minedInBlockIndex, transferSuccessful);   
-        //TODO Validate transaction & Send to other peers
-
+        transactionHash, minedInBlockIndex, transferSuccessful);  
         pendingTransactions.insertTransaction(transaction);
       
         res.status(201).json({

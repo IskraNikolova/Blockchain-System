@@ -5,47 +5,13 @@ const RPMD160 = require('ripemd160')
 const {randomBytes} = require('crypto')
 const secp256k1 = require('secp256k1')
 
-module.exports.convertUIntToHex = (uint) => {
-    let hex = Buffer.from(uint).toString('hex');
-    return hex
-}
-
-module.exports.converHexToUint = (text) => {
-    let buffer = Buffer
-        .from(text.toString(cryptoJs.enc.Hex), 'hex');
-    let array = new Uint8Array(buffer);
-    return array
-}
-
 module.exports.calculateSHA256 = (obj) => {
     return cryptoJs.SHA256(obj).toString()
-}
-
-module.exports.generateKeys = () => {
-    let privKey;
-    do {
-        privKey = randomBytes(32);
-    } while (!secp256k1.privateKeyVerify(privKey))
-    let publicKey = secp256k1.publicKeyCreate(privKey, true);
-    let pvHex = this.convertUIntToHex(privKey);
-    let pbHex = this.convertUIntToHex(publicKey);
-
-    return [pvHex, pbHex]
 }
 
 module.exports.hashAndBuffer = (obj) => {
     let hash = this.calculateSHA256(obj);
     return this.converHexToUint(hash)
-}
-
-module.exports.sign = (message, privateKey) => {
-    let sign = secp256k1
-        .sign(this.hashAndBuffer(message), this.converHexToUint(privateKey));
-    let signDER = secp256k1
-        .signatureExport(sign.signature);
-
-    return signDER
-
 }
 
 module.exports.checkSign = (message, signature, publicKey) => {
@@ -58,21 +24,15 @@ module.exports.checkSign = (message, signature, publicKey) => {
     return result
 }
 
-module.exports.getPublicKey = (privateKey) => {
-    let publicKey = secp256k1
-        .publicKeyCreate(this.converHexToUint(privateKey), true);
-
-    return publicKey
+module.exports.convertUIntToHex = (uint) => {
+    let hex = Buffer.from(uint).toString('hex');
+    return hex
 }
 
-module.exports.publiKeyToAddres = (publicKey) => {
-    let addres = new RPMD160()
-        .update(publicKey)
-        .digest('hex');
-
-    return addres
+module.exports.converHexToUint = (text) => {
+    let buffer = Buffer
+        .from(text.toString(cryptoJs.enc.Hex), 'hex');
+    let array = new Uint8Array(buffer);
+    return array
 }
 
-module.exports.publicKeyVerify = (publicKey) => {
-    return secp256k1.publicKeyVerify(publicKey)
-}
