@@ -9,6 +9,7 @@ const Transaction = require('./../models/transaction')
 router.get('/:tranHash/info', (req, res) => { 
   let transaction = main.pendingTransactions
             .filter(tr => tr.transactionHash == req.params['tranHash'])[0];
+
   if(!transaction){
     transaction = main.confirmedTransactions
             .filter(tr => tr.transactionHash == req.params['tranHash'])[0];
@@ -16,10 +17,9 @@ router.get('/:tranHash/info', (req, res) => {
   
   res.setHeader('Content-Type', 'application/json'); 
   if(transaction){
-    res.status(200).json({
-      success: true,
+    res.status(200).json(
       transaction
-    })
+    )
   }else{
     res.status(404)
     res.send("Ooops :( Not Found")
