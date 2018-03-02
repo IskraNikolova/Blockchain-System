@@ -51,8 +51,15 @@
             return responseFromNode;
         }
 
-        public static void CreatePostRequestToNode(JObject dataObject)
+        public static void CreatePostRequestToNode(long nonce, string timestamp, string blockHash)
         {
+            JObject dataObject = JObject.FromObject(new
+            {
+                nonce = nonce,
+                dateCreated = timestamp,
+                blockHash = blockHash
+            });
+
             byte[] blockFoundData = Encoding.UTF8.GetBytes(dataObject.ToString());
             int retries = 0;
             HttpStatusCode statusCode = HttpStatusCode.OK;
