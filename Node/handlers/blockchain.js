@@ -99,16 +99,14 @@ module.exports.calculateHashForBlock = (block) => {
         block.difficulty,
         block.prevBlockHash, 
         block.minedBy,
-        block.blockDataHash,
-        block.nonce,
-        block.dateCreated, 
+        block.blockDataHash
        );
 
     return blockHash;
 }
 
-module.exports.calculateHash = (index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash, nonce, dateCreated) => {
-    return crypto.calculateSHA256({index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash, nonce, dateCreated});
+module.exports.calculateHash = (index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash) => {
+    return crypto.calculateSHA256({index, transactions, difficulty, prevBlockHash, minedBy, blockDataHash});
 }
 
 module.exports.isValidNewBlock = (newBlock, previousBlock) => {
